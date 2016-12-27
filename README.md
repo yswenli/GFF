@@ -1,6 +1,8 @@
 # GFF
 GFF is a imitation QQ communication project, based on high IOCP, UDP NAT, etc.
 
+<a href="http://www.yswenli.net/download/gffq.zip" target="_blank">Online test Download</a>
+
 The pictures to run the interface
 
 <h3>GFF Server Demo</h3><br/>
