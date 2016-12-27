@@ -1,7 +1,7 @@
 # GFF
 GFF is a imitation QQ communication project, based on high IOCP, UDP NAT, etc.
 
-<a href="http://www.yswenli.net/download/gffq.zip" target="_blank">Online test Download</a>
+<a href="http://www.yswenli.net/download/gffq.zip" target="_blank">Online test Download</a> ，Because Ali cloud server can not use IP access HTTP, pictures、 files can not upload
 
 The pictures to run the interface
 
