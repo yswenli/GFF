@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2771C51E-5E0F-4501-8E58-99AD70027C58}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GFF.Component</RootNamespace>
+    <AssemblyName>GFF.Component</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSkin">
+      <HintPath>..\GFFClient\Dlls\CSkin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Capture\CaptureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Capture\CaptureForm.designer.cs">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\ColorBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Capture\ColorBox.designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\FrmOut.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Capture\FrmOut.designer.cs">
+      <DependentUpon>FrmOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\FrmSize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Capture\FrmSize.designer.cs">
+      <DependentUpon>FrmSize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\ImageProcessBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Capture\ImageProcessBox.designer.cs">
+      <DependentUpon>ImageProcessBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\ScreenCapture.cs" />
+    <Compile Include="Capture\ToolButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Capture\ToolButton.designer.cs">
+      <DependentUpon>ToolButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Capture\ToolButtonDesigner.cs" />
+    <Compile Include="ChatBox\ChatBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ChatBox\ChatBoxContent.cs" />
+    <Compile Include="ChatBox\GifBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ChatBox\ImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChatBox\ImageForm.designer.cs">
+      <DependentUpon>ImageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChatBox\Internals\CHARRANGE.cs" />
+    <Compile Include="ChatBox\Internals\CLIPFORMAT.cs" />
+    <Compile Include="ChatBox\Internals\COMRECT.cs" />
+    <Compile Include="ChatBox\Internals\DVASPECT.cs" />
+    <Compile Include="ChatBox\Internals\FORMATETC.cs" />
+    <Compile Include="ChatBox\Internals\GETCLIPBOARDDATAFLAGS.cs" />
+    <Compile Include="ChatBox\Internals\GETOBJECTOPTIONS.cs" />
+    <Compile Include="ChatBox\Internals\IAdviseSink.cs" />
+    <Compile Include="ChatBox\Internals\IDataObject.cs" />
+    <Compile Include="ChatBox\Internals\IEnumFORMATETC.cs" />
+    <Compile Include="ChatBox\Internals\IEnumOLEVERB.cs" />
+    <Compile Include="ChatBox\Internals\IEnumSTATDATA.cs" />
+    <Compile Include="ChatBox\Internals\IEnumSTATSTG.cs" />
+    <Compile Include="ChatBox\Internals\ILockBytes.cs" />
+    <Compile Include="ChatBox\Internals\IOleClientSite.cs" />
+    <Compile Include="ChatBox\Internals\IOleContainer.cs" />
+    <Compile Include="ChatBox\Internals\IOleObject.cs" />
+    <Compile Include="ChatBox\Internals\IRichEditOle.cs" />
+    <Compile Include="ChatBox\Internals\ISequentialStream.cs" />
+    <Compile Include="ChatBox\Internals\IStorge.cs" />
+    <Compile Include="ChatBox\Internals\IStream.cs" />
+    <Compile Include="ChatBox\Internals\NativeMethods.cs" />
+    <Compile Include="ChatBox\Internals\REOBJECT.cs" />
+    <Compile Include="ChatBox\Internals\REOOBJECTFLAGS.cs" />
+    <Compile Include="ChatBox\Internals\RichEditOle.cs" />
+    <Compile Include="ChatBox\Internals\STATDATA.cs" />
+    <Compile Include="ChatBox\Internals\STGM.cs" />
+    <Compile Include="ChatBox\Internals\STGMEDIUM.cs" />
+    <Compile Include="ChatBox\Internals\tagLOGPALETTE.cs" />
+    <Compile Include="ChatBox\Internals\tagOLEVERB.cs" />
+    <Compile Include="ChatBox\Internals\TYMED.cs" />
+    <Compile Include="Emotion\EmotionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Emotion\EmotionForm.designer.cs">
+      <DependentUpon>EmotionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Emotion\ImageEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Remote\RemoteScreenUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Remote\RemoteScreenUserControl.designer.cs">
+      <DependentUpon>RemoteScreenUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Remote\RequestRemoteHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Capture\CaptureForm.resx">
+      <DependentUpon>CaptureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Capture\ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Capture\FrmOut.resx">
+      <DependentUpon>FrmOut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Capture\FrmSize.resx">
+      <DependentUpon>FrmSize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Capture\ImageProcessBox.resx">
+      <DependentUpon>ImageProcessBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatBox\ChatBox.resx">
+      <DependentUpon>ChatBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatBox\GifBox.resx">
+      <DependentUpon>GifBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatBox\ImageForm.resx">
+      <DependentUpon>ImageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Emotion\EmotionForm.resx">
+      <DependentUpon>EmotionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Remote\RemoteScreenUserControl.resx">
+      <DependentUpon>RemoteScreenUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GFF.Core\GFF.Core.csproj">
+      <Project>{9D92D09A-8243-46F2-B84F-F2297D2565D4}</Project>
+      <Name>GFF.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GFF.Helper\GFF.Helper.csproj">
+      <Project>{9293B703-CFED-4072-93ED-65BAC837D1AE}</Project>
+      <Name>GFF.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GFF.Model\GFF.Model.csproj">
+      <Project>{7E4F864A-AC23-49E5-A9DF-FD57BA1C58ED}</Project>
+      <Name>GFF.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GFF\GFF.csproj">
+      <Project>{367A76E1-DFE2-46D3-BBDA-2F5F237F9DA9}</Project>
+      <Name>GFF</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\brush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\color.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ellips.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\large.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\middle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\none.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\separator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

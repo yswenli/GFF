@@ -47,6 +47,7 @@ namespace GFFClient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InitForm));
             this.skinWaterTextBox1 = new CCWin.SkinControl.SkinWaterTextBox();
             this.skinButton1 = new CCWin.SkinControl.SkinButton();
@@ -99,6 +100,7 @@ namespace GFFClient
             this.skinWaterTextBox3.Location = new System.Drawing.Point(47, 46);
             this.skinWaterTextBox3.MaxLength = 15;
             this.skinWaterTextBox3.Name = "skinWaterTextBox3";
+            this.skinWaterTextBox3.ReadOnly = true;
             this.skinWaterTextBox3.Size = new System.Drawing.Size(231, 21);
             this.skinWaterTextBox3.TabIndex = 3;
             this.skinWaterTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

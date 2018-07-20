@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using GFF;
 using GFF.Model.Entity;
+using GFF.MS;
 
 namespace GFFClient
 {
@@ -43,6 +44,17 @@ namespace GFFClient
         /// </summary>
         public MessageClient Client { get; private set; }
 
+        public void Start(string userName, string channelID)
+        {
+            _userName = userName;
+            _channelID = channelID;
+
+            Client = new MessageClient(_userName);
+            Client.OnLogined += Client_OnLogined;
+            Client.OnMessage += Client_OnMessage;
+            Client.OnError += Client_OnError;
+            Client.ConnectAsync();
+        }
 
         public void Publish(string channelID, string value)
         {
@@ -52,21 +64,10 @@ namespace GFFClient
 
         public void SendFile(string channelID, string fileName, Action<string> callBack)
         {
-            Client.SendFileAsync(fileName, url => { callBack?.Invoke(url); });
+            Client.HttpSendFileAsync(fileName, url => { callBack?.Invoke(url); });
         }
-
-        public void Start(string userName, string channelID)
-        {
-            _userName = userName;
-            _channelID = channelID;
-            Client = new MessageClient(_userName);
-            Client.OnLogined += Client_OnLogined;
-            Client.OnMessage += Client_OnMessage;
-            Client.OnError += Client_OnError;
-            Client.ConnectAsync();
-        }
-
-        private void Client_OnLogined(string msg)
+        
+        private void Client_OnLogined(object sender, string msg)
         {
             Client.SubscribeAsync(_channelID);
         }
@@ -82,9 +83,7 @@ namespace GFFClient
             {
                 if (ex is SocketException)
                 {
-                    Thread.Sleep(100);
-                    if (!Client.IsConnected)
-                        Start(_userName, _channelID);
+                    Client.ReConnectAsync();
                 }
             }
         }

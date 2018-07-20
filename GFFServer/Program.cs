@@ -20,9 +20,11 @@
 using System;
 using System.Text;
 using GFF;
+using GFF.Core.Interface;
 using GFF.Core.Tcp.Model;
 using GFF.Helper;
 using GFF.Model.Entity;
+using GFF.MS;
 
 namespace GFFServer
 {
@@ -36,7 +38,7 @@ namespace GFFServer
             server = new MessageServer();
             server.OnAccepted += Server_OnAccepted;
             server.OnErrored += Server_OnErrored;
-            server.OnReceived += Server_OnReceived;
+            server.OnServerReceived += Server_OnReceived;
             server.OnUnAccepted += Server_OnUnAccepted;
             ConsoleHelper.WriteLine("服务器初始化完毕...", ConsoleColor.Green);
             ConsoleHelper.WriteLine("正在启动服务器...", ConsoleColor.Green);
@@ -46,21 +48,28 @@ namespace GFFServer
             Console.ReadLine();
         }
 
-        private static void Server_OnAccepted(int num, UserToken userToken)
+        private static void Server_OnAccepted(int num, IUserToken userToken)
         {
             ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.UID, num));
         }
 
-        private static void Server_OnUnAccepted(int num, UserToken userToken)
+        private static void Server_OnUnAccepted(int num, IUserToken userToken)
         {
             ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", userToken.UID, num));
         }
 
-        private static void Server_OnReceived(UserToken userToken, Message msg)
+        private static void Server_OnReceived(IUserToken userToken, Message msg)
         {
-            ConsoleHelper.WriteLine(
-                string.Format("收到客户端信息；协议：{0}，频道：{1}，内容：{2}", msg.Protocal, msg.Accepter,
-                    msg.Data == null ? "" : Encoding.UTF8.GetString(msg.Data)), ConsoleColor.Green, false);
+
+            if (msg.Protocal == (byte)GFF.Model.Enum.MessageProtocalEnum.File)
+            {
+                ConsoleHelper.WriteLine(
+                string.Format("收到客户端信息；协议：{0}，频道：{1}，内容：文件", msg.Protocal, msg.Accepter, ConsoleColor.Green, false));
+            }
+            else
+            {
+                //ConsoleHelper.WriteLine(string.Format("收到客户端信息；协议：{0}，频道：{1}，内容：{2}", msg.Protocal, msg.Accepter, msg.Data == null ? "" : Encoding.UTF8.GetString(msg.Data)), ConsoleColor.Green, false);
+            }
         }
 
         private static void Server_OnErrored(Exception ex, params object[] args)

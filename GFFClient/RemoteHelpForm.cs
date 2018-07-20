@@ -37,31 +37,21 @@ namespace GFFClient
 
         private QualityLevelEnum _qualityLevel = QualityLevelEnum.Normal;
 
-        private string _serverIP;
-
-        private int _serverPort;
-
         private string _userName;
 
-        private string _password;
-
-        private string ip;
-
-        private int port;
+        private string _remote;
 
         /// <summary>
         ///     请求方
         /// </summary>
         private RequestRemoteHelper requestRemoteHelper1;
 
-        public RemoteHelpForm(string userName, string password)
+        public RemoteHelpForm(string userName, string remote)
         {
             InitializeComponent();
 
-            this._serverIP = ClientConfig.Instance().IP;
-            this._serverPort = ClientConfig.Instance().UdpPort;
             this._userName = userName;
-            this._password = password;
+            this._remote = remote;
 
             skinProgressBar1.Visible = false;
             comboBox1.SelectedIndex = 1;
@@ -71,7 +61,7 @@ namespace GFFClient
             remoteScreenUserControl1.OnAccepted += RemoteScreenUserControl_OnAccepted;
             remoteScreenUserControl1.OnOffLined += remoteScreenUserControl1_OnOffLined;
             remoteScreenUserControl1.OnEscUp += remoteScreenUserControl1_OnEscUp;
-            remoteScreenUserControl1.Init(this._serverIP, this._serverPort, this._userName, this._password);
+            remoteScreenUserControl1.Init(this._userName);
         }
 
         private void RemoteHelpForm_Load(object sender, EventArgs e)
@@ -82,8 +72,18 @@ namespace GFFClient
             //
             SizedForm(false);
             //
-            requestRemoteHelper1 = new RequestRemoteHelper(this._serverIP, this._serverPort, this._userName, this._password);
+            requestRemoteHelper1 = new RequestRemoteHelper(this._userName);
+            requestRemoteHelper1.OnConnected += RequestRemoteHelper1_OnConnected;
             requestRemoteHelper1.OnOffLined += remoteServerHelper1_OnOffLined;
+        }
+
+        private void RequestRemoteHelper1_OnConnected()
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                label1.Text = textBox1.Text + "对方已响应了你的远程协助请求";
+                skinProgressBar1.Visible = false;
+            }));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace GFFClient
                 skinProgressBar1.Visible = false;
                 SizedForm(false);
                 remoteScreenUserControl1.Stop();
-                remoteScreenUserControl1.Init(this._serverIP, this._serverPort, this._userName, this._password);
+                remoteScreenUserControl1.Init(this._userName);
             });
         }
 
@@ -137,13 +137,12 @@ namespace GFFClient
             textBox1.Enabled = checkBox1.Enabled = comboBox1.Enabled = skinTrackBar1.Enabled = button1.Enabled = false;
 
             skinProgressBar1.Visible = true;
+
             try
             {
                 requestRemoteHelper1.StartSendCapture(textBox1.Text, _isHelp, _qualityLevel, _fps);
-                label1.Text = textBox1.Text + "对方已响应了你的远程协助请求";
-                skinProgressBar1.Visible = false;
 
-                PingHelper.Start(this._serverIP, 3000, Encoding.Default.GetBytes("Ping Data"),
+                PingHelper.Start(ServerConfig.Instance().IP, 3000, Encoding.Default.GetBytes("Ping Data"),
                     () =>
                     {
                         this.InvokeAction(
@@ -205,6 +204,7 @@ namespace GFFClient
             }
             try
             {
+                remoteScreenUserControl1.Stop();
                 remoteScreenUserControl1.Dispose();
             }
             catch

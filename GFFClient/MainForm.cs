@@ -40,7 +40,7 @@ namespace GFFClient
     public partial class MainForm : CCSkinMain
     {
         private Image fileImage = Resources.file;
-        private readonly PushHelper pushHelper = new PushHelper();
+        public static PushHelper PushHelper = new PushHelper();
 
         #region 无参构造
 
@@ -102,7 +102,7 @@ namespace GFFClient
                 foreach (var item in content.ForeignImageDictionary)
                     try
                     {
-                        url += string.Format("[img={0}]{1}", ImageHelper.ToUrl(pushHelper.Client.Url, item.Value),
+                        url += string.Format("[img={0}]{1}", ImageHelper.ToUrl(PushHelper.Client.Url, item.Value),
                             Environment.NewLine);
                     }
                     catch
@@ -153,7 +153,7 @@ namespace GFFClient
             openFileDialog1.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
             openFileDialog1.FileName = string.Empty;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                pushHelper.Client.SendFileAsync(pushHelper.Client.Url, openFileDialog1.FileName, url =>
+                PushHelper.Client.HttpSendFileAsync(PushHelper.Client.Url, openFileDialog1.FileName, url =>
                 {
                     try
                     {
@@ -239,7 +239,7 @@ namespace GFFClient
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
-            pushHelper.Stop();
+            PushHelper.Stop();
             try
             {
                 Environment.Exit(-1);
@@ -295,9 +295,9 @@ namespace GFFClient
 
             chatBox_history.ContextMenuMode = GFF.Component.ChatBox.ChatBoxContextMenuMode.ForOutput;
 
-            pushHelper.OnMessage += pushHelper_OnMessage;
+            PushHelper.OnMessage += pushHelper_OnMessage;
 
-            pushHelper.Start(this.QQUser.DisplayName, "all");
+            PushHelper.Start(this.QQUser.DisplayName, "all");
 
 
             //
@@ -351,6 +351,13 @@ namespace GFFClient
                 {
                     userName = msg.Substring(0, msg.IndexOf("|"));
                     json = msg.Substring(msg.IndexOf("|") + 1);
+                    try
+                    {
+                        content = SerializeHelper.Deserialize<GFF.Component.ChatBox.ChatBoxContent>(json);
+                    }
+                    catch {
+                        return;
+                    }
                     content = SerializeHelper.Deserialize<GFF.Component.ChatBox.ChatBoxContent>(json);
                     FriendHelper.Set(userName);
                 }
@@ -533,13 +540,13 @@ namespace GFFClient
                     var receiver = msg.Split(new string[] { "\"" }, StringSplitOptions.RemoveEmptyEntries)[3];
                     receiver = receiver.Substring(1);
                     receiver = receiver.Split(new string[] { " ", ":", "：", "　" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    pushHelper.Client.SendPrivateMsg(receiver, qqUser.DisplayName + "|" + msg);
+                    PushHelper.Client.SendPrivateMsg(receiver, qqUser.DisplayName + "|" + msg);
                     AppendChatBoxContent(qqUser.DisplayName, null, SerializeHelper.Deserialize<GFF.Component.ChatBox.ChatBoxContent>(msg),
                         Color.YellowGreen, false);
                 }
                 else
                 {
-                    pushHelper.Publish("all", qqUser.DisplayName + "|" + msg);
+                    PushHelper.Publish("all", qqUser.DisplayName + "|" + msg);
                 }
             }
             catch (Exception)
