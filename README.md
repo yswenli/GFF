@@ -7,6 +7,6 @@ GFF是仿QQ通信项目，通信基于SAEA.MessageSocket、SAEA.Http、SAEA.MVC�
 
 nuget url: https://www.nuget.org/packages?q=saea
 
-
+<img src="https://github.com/yswenli/GFF/blob/master/1.png?raw=true" alt="GFF"/>
 
 
