@@ -17,11 +17,12 @@
  * 创建说明：
  *****************************************************************************************************/
 
-using System;
-using System.Net.Sockets;
-using System.Text;
-using GFF.Model.Entity;
+using GFF.Component.Config;
 using SAEA.MessageSocket;
+using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GFFClient
 {
@@ -37,6 +38,13 @@ namespace GFFClient
 
         private string _userName;
 
+        ClientConfig clientConfig;
+
+        public PushHelper()
+        {
+            clientConfig = ClientConfig.Instance();
+        }
+
         /// <summary>
         ///     Tcp客户端
         /// </summary>
@@ -47,52 +55,61 @@ namespace GFFClient
             _userName = userName;
             _channelID = channelID;
 
-            Client = new MessageClient(_userName);
-            Client.OnLogined += Client_OnLogined;
-            Client.OnMessage += Client_OnMessage;
+            Client = new MessageClient(10240, clientConfig.IP, clientConfig.Port);
+            Client.OnChannelMessage += Client_OnChannelMessage;
+            Client.OnPrivateMessage += Client_OnPrivateMessage;
             Client.OnError += Client_OnError;
-            Client.ConnectAsync();
+            Client.Connect();
+            Client.Login();
+            Client.Subscribe(channelID);
+        }
+
+        private void Client_OnError(string ID, Exception ex)
+        {
+            OnError.Invoke(ex, ex.Message);
+        }
+
+        private void Client_OnChannelMessage(SAEA.MessageSocket.Model.Business.ChannelMessage msg)
+        {
+            OnMessage?.Invoke(_channelID, msg.Content);
+        }
+
+        private void Client_OnPrivateMessage(SAEA.MessageSocket.Model.Business.PrivateMessage msg)
+        {
+            OnMessage?.Invoke(msg.Receiver, msg.Content);
         }
 
         public void Publish(string channelID, string value)
         {
-            Client.PublishAsync(channelID, value);
+            Client.SendChannelMsg(channelID, value);
         }
 
 
         public void SendFile(string channelID, string fileName, Action<string> callBack)
         {
-            Client.HttpSendFileAsync(fileName, url => { callBack?.Invoke(url); });
-        }
-        
-        private void Client_OnLogined(object sender, string msg)
-        {
-            Client.SubscribeAsync(_channelID);
+            HttpSendFileAsync(fileName, url => { callBack?.Invoke(url); });
         }
 
-        private void Client_OnMessage(object sender, Message msg)
-        {
-            OnMessage?.Invoke(msg.Accepter, Encoding.UTF8.GetString(msg.Data));
-        }
 
-        private void Client_OnError(Exception ex, string msg)
+        public void HttpSendFileAsync(string fileName, Action<string> callBack)
         {
-            lock (lockObj)
+            Task.Run(() =>
             {
-                if (ex is SocketException)
+                using (WebClient webClient = new WebClient())
                 {
-                    Client.ReConnectAsync();
+                    var url = clientConfig.Url + Encoding.UTF8.GetString(webClient.UploadFile(clientConfig.Url + "Upload", fileName));
+                    callBack.Invoke(url);
                 }
-            }
+            });
         }
 
         public void Stop()
         {
-            if (Client.IsConnected)
+            try
             {
-                Client.UnsubscribeAsync(_channelID);
-                Client.DisConnect();
+                Client.Dispose();
             }
+            catch { }
         }
 
         public event OnMessageHanndle OnMessage;

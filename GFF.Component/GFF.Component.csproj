@@ -177,13 +177,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Remote\RemoteScreenUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Remote\RemoteScreenUserControl.designer.cs">
-      <DependentUpon>RemoteScreenUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Remote\RequestRemoteHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Capture\CaptureForm.resx">
@@ -216,9 +209,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Remote\RemoteScreenUserControl.resx">
-      <DependentUpon>RemoteScreenUserControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

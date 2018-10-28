@@ -127,12 +127,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushHelper.cs" />
-    <Compile Include="RemoteHelpForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RemoteHelpForm.designer.cs">
-      <DependentUpon>RemoteHelpForm.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="InitForm.resx">
       <DependentUpon>InitForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,9 +143,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RemoteHelpForm.resx">
-      <DependentUpon>RemoteHelpForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

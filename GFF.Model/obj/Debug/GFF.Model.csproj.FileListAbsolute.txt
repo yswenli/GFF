@@ -13,8 +13,8 @@ F:\百度云\Develop\案例\GFF\GFF.Model\obj\Debug\GFF.Model.pdb
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\bin\Debug\GFF.Model.dll
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\bin\Debug\GFF.Model.pdb
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\bin\Debug\protobuf-net.dll
-E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.csprojAssemblyReference.cache
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.csproj.CoreCompileInputs.cache
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.csproj.CopyComplete
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.dll
 E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.pdb
+E:\百度云\Develop\案例\网络类\GFF\GFF.Model\obj\Debug\GFF.Model.csprojAssemblyReference.cache

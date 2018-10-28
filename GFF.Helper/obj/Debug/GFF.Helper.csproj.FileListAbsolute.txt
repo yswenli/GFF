@@ -19,8 +19,8 @@ E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\bin\Debug\GFF.Helper.pdb
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\bin\Debug\Newtonsoft.Json.dll
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\bin\Debug\protobuf-net.dll
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\bin\Debug\Newtonsoft.Json.xml
-E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.csprojAssemblyReference.cache
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.csproj.CoreCompileInputs.cache
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.csproj.CopyComplete
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.dll
 E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.pdb
+E:\百度云\Develop\案例\网络类\GFF\GFF.Helper\obj\Debug\GFF.Helper.csprojAssemblyReference.cache

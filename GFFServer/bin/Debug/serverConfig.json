@@ -1,1 +1,1 @@
-{"Backlog":10000,"HttpPort":8080,"IP":"172.31.32.85","InitBufferSize":1024,"MaxClientSize":200000,"OperationThreads":10,"Port":6666,"SocketTimeOutMS":60000}
+{"FilePort":39655,"IP":"127.0.0.1","InitBufferSize":10240,"MaxClientSize":10000,"Port":39654}

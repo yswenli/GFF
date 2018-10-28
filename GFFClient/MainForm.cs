@@ -17,6 +17,15 @@
  * 创建说明：
  *****************************************************************************************************/
 
+using CCWin;
+using CCWin.SkinClass;
+using CCWin.SkinControl;
+using GFF.Component.Capture;
+using GFF.Component.Config;
+using GFF.Component.Emotion;
+using GFF.Helper;
+using GFF.Helper.Extention;
+using GFFClient.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,22 +33,14 @@ using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using CCWin;
-using CCWin.SkinClass;
-using CCWin.SkinControl;
-using GFF.Component.Capture;
-using GFF.Helper;
-using GFFClient.Properties;
 using ImageHelper = GFF.Helper.ImageHelper;
-using GFF.Helper.Extention;
-using GFF.Component.Emotion;
-using GFF.Component.ChatBox;
 
 namespace GFFClient
 {
     public partial class MainForm : CCSkinMain
     {
         private Image fileImage = Resources.file;
+
         public static PushHelper PushHelper = new PushHelper();
 
         #region 无参构造
@@ -102,7 +103,7 @@ namespace GFFClient
                 foreach (var item in content.ForeignImageDictionary)
                     try
                     {
-                        url += string.Format("[img={0}]{1}", ImageHelper.ToUrl(PushHelper.Client.Url, item.Value),
+                        url += string.Format("[img={0}]{1}", ClientConfig.Instance().Url + ImageHelper.ToUrl(ClientConfig.Instance().Url + "Upload", item.Value),
                             Environment.NewLine);
                     }
                     catch
@@ -127,7 +128,7 @@ namespace GFFClient
             c.Font = content.Font;
             c.Color = content.Color;
             string msg = SerializeHelper.Serialize(c);
-            ThreadPool.QueueUserWorkItem(s => SendMsgToServer(msg));
+            ThreadPool.QueueUserWorkItem(s => SendMsgToServer(msg));            
         }
 
         #endregion
@@ -153,7 +154,7 @@ namespace GFFClient
             openFileDialog1.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
             openFileDialog1.FileName = string.Empty;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                PushHelper.Client.HttpSendFileAsync(PushHelper.Client.Url, openFileDialog1.FileName, url =>
+                PushHelper.HttpSendFileAsync(openFileDialog1.FileName, url =>
                 {
                     try
                     {
@@ -229,7 +230,7 @@ namespace GFFClient
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            new RemoteHelpForm(qqUser.NicName, "12321").Show();
+
         }
 
         #endregion
@@ -299,7 +300,6 @@ namespace GFFClient
 
             PushHelper.Start(this.QQUser.DisplayName, "all");
 
-
             //
             chatListBox.DoubleClickSubItem += ChatListBox_DoubleClickSubItem;
             FriendHelper.OnListChanged += FriendHelper_OnListChanged;
@@ -355,7 +355,8 @@ namespace GFFClient
                     {
                         content = SerializeHelper.Deserialize<GFF.Component.ChatBox.ChatBoxContent>(json);
                     }
-                    catch {
+                    catch
+                    {
                         return;
                     }
                     content = SerializeHelper.Deserialize<GFF.Component.ChatBox.ChatBoxContent>(json);
@@ -548,6 +549,8 @@ namespace GFFClient
                 {
                     PushHelper.Publish("all", qqUser.DisplayName + "|" + msg);
                 }
+
+                OnReceivedMsg(qqUser.DisplayName + "|" + msg);
             }
             catch (Exception)
             {

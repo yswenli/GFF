@@ -18,13 +18,12 @@
  *****************************************************************************************************/
 
 using System;
-using System.Text;
-using GFF;
-using GFF.Core.Interface;
-using GFF.Core.Tcp.Model;
+using GFF.Component.Config;
 using GFF.Helper;
 using GFF.Model.Entity;
-using GFF.MS;
+using SAEA.MessageSocket;
+using SAEA.MVC;
+using SAEA.Sockets.Interface;
 
 namespace GFFServer
 {
@@ -32,49 +31,38 @@ namespace GFFServer
     {
         private static MessageServer server;
 
+        private static SAEAMvcApplication mvcApplication;
+
         private static void Main(string[] args)
         {
             ConsoleHelper.WriteLine("正在初始化服务器...", ConsoleColor.Green);
             server = new MessageServer();
             server.OnAccepted += Server_OnAccepted;
-            server.OnErrored += Server_OnErrored;
-            server.OnServerReceived += Server_OnReceived;
-            server.OnUnAccepted += Server_OnUnAccepted;
+            server.OnError += Server_OnError;
+            server.OnDisconnected += Server_OnDisconnected;
+            mvcApplication = new SAEAMvcApplication(port: ServerConfig.Instance().FilePort);
             ConsoleHelper.WriteLine("服务器初始化完毕...", ConsoleColor.Green);
             ConsoleHelper.WriteLine("正在启动服务器...", ConsoleColor.Green);
             server.Start();
+            mvcApplication.Start();
             ConsoleHelper.WriteLine("服务器启动完毕...", ConsoleColor.Green);
             ConsoleHelper.WriteLine("点击回车，结束服务");
             Console.ReadLine();
         }
 
-        private static void Server_OnAccepted(int num, IUserToken userToken)
+        private static void Server_OnDisconnected(string ID, Exception ex)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.UID, num));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", ID, server.ClientCounts));
         }
 
-        private static void Server_OnUnAccepted(int num, IUserToken userToken)
+        private static void Server_OnError(string ID, Exception ex)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", userToken.UID, num));
+            ConsoleHelper.WriteErr(ex);
         }
 
-        private static void Server_OnReceived(IUserToken userToken, Message msg)
+        private static void Server_OnAccepted(IUserToken userToken)
         {
-
-            if (msg.Protocal == (byte)GFF.Model.Enum.MessageProtocalEnum.File)
-            {
-                ConsoleHelper.WriteLine(
-                string.Format("收到客户端信息；协议：{0}，频道：{1}，内容：文件", msg.Protocal, msg.Accepter, ConsoleColor.Green, false));
-            }
-            else
-            {
-                //ConsoleHelper.WriteLine(string.Format("收到客户端信息；协议：{0}，频道：{1}，内容：{2}", msg.Protocal, msg.Accepter, msg.Data == null ? "" : Encoding.UTF8.GetString(msg.Data)), ConsoleColor.Green, false);
-            }
-        }
-
-        private static void Server_OnErrored(Exception ex, params object[] args)
-        {
-            ConsoleHelper.WriteErr(ex, args);
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.ID, server.ClientCounts - 1));
         }
     }
 }
