@@ -17,10 +17,10 @@
  * 创建说明：
  *****************************************************************************************************/
 
-using System;
 using CCWin;
 using CCWin.SkinControl;
-using GFF;
+using GFF.Component.Config;
+using System;
 
 namespace GFFClient
 {

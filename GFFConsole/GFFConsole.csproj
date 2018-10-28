@@ -56,10 +56,6 @@
     <Content Include="Fetion.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GFF.Core\GFF.Core.csproj">
-      <Project>{9d92d09a-8243-46f2-b84f-f2297d2565d4}</Project>
-      <Name>GFF.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GFF.Helper\GFF.Helper.csproj">
       <Project>{9293b703-cfed-4072-93ed-65bac837d1ae}</Project>
       <Name>GFF.Helper</Name>
@@ -67,10 +63,6 @@
     <ProjectReference Include="..\GFF.Model\GFF.Model.csproj">
       <Project>{7e4f864a-ac23-49e5-a9df-fd57ba1c58ed}</Project>
       <Name>GFF.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GFF\GFF.csproj">
-      <Project>{367a76e1-dfe2-46d3-bbda-2f5f237f9da9}</Project>
-      <Name>GFF</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

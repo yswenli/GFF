@@ -322,3 +322,12 @@ F:\百度云\Develop\案例\GFF\GFFClient\obj\Debug\GFFClient.RemoteHelpForm.res
 F:\百度云\Develop\案例\GFF\GFFClient\obj\Debug\GFFClient.csproj.GenerateResource.Cache
 F:\百度云\Develop\案例\GFF\GFFClient\obj\Debug\GFF客户端.exe
 F:\百度云\Develop\案例\GFF\GFFClient\obj\Debug\GFF客户端.pdb
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.csprojAssemblyReference.cache
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.InitForm.resources
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.MainForm.resources
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.Properties.Resources.resources
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.RemoteHelpForm.resources
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.csproj.GenerateResource.cache
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFFClient.csproj.CoreCompileInputs.cache
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFF客户端.exe
+E:\百度云\Develop\案例\网络类\GFF\GFFClient\obj\Debug\GFF客户端.pdb

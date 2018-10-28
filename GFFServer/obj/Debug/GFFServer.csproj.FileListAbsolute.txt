@@ -38,3 +38,7 @@ F:\百度云\Develop\案例\GFF\GFFServer\bin\Debug\Newtonsoft.Json.xml
 F:\百度云\Develop\案例\GFF\GFFServer\obj\Debug\GFFServer.csprojResolveAssemblyReference.cache
 F:\百度云\Develop\案例\GFF\GFFServer\obj\Debug\GFFServer.exe
 F:\百度云\Develop\案例\GFF\GFFServer\obj\Debug\GFFServer.pdb
+E:\百度云\Develop\案例\网络类\GFF\GFFServer\obj\Debug\GFFServer.csprojAssemblyReference.cache
+E:\百度云\Develop\案例\网络类\GFF\GFFServer\obj\Debug\GFFServer.csproj.CoreCompileInputs.cache
+E:\百度云\Develop\案例\网络类\GFF\GFFServer\obj\Debug\GFFServer.exe
+E:\百度云\Develop\案例\网络类\GFF\GFFServer\obj\Debug\GFFServer.pdb

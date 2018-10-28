@@ -50,17 +50,9 @@
     <None Include="html\proto\Message.proto" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GFF.Core\GFF.Core.csproj">
-      <Project>{9D92D09A-8243-46F2-B84F-F2297D2565D4}</Project>
-      <Name>GFF.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GFF.Helper\GFF.Helper.csproj">
       <Project>{9293B703-CFED-4072-93ED-65BAC837D1AE}</Project>
       <Name>GFF.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GFF\GFF.csproj">
-      <Project>{367A76E1-DFE2-46D3-BBDA-2F5F237F9DA9}</Project>
-      <Name>GFF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
