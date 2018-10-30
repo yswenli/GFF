@@ -1,1 +1,0 @@
-{"Backlog":10000,"HttpPort":8080,"IP":"127.0.0.1","InitBufferSize":1024,"MaxClientSize":60000,"OperationThreads":10,"Port":6666,"SocketTimeOutMS":60000,"UdpPort":28888}

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GFFServer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("weli")]
+[assembly: AssemblyCompany("yswenli")]
 [assembly: AssemblyProduct("GFFServer")]
 [assembly: AssemblyCopyright("Copyright wenli ©  2016")]
 [assembly: AssemblyTrademark("")]
