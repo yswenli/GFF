@@ -566,3 +566,12 @@ GFFClient/obj/Debug/GFFClient.csproj.FileListAbsolute.txt
 GFFServer/obj/Debug/GFFServer.csproj.FileListAbsolute.txt
 GFF.Model/obj/Debug/GFF.Model.csprojAssemblyReference.cache
 GFF.Helper/obj/Debug/GFF.Helper.csprojAssemblyReference.cache
+GFFClient/bin/Debug/System.Threading.Tasks.Dataflow.xml
+GFFClient/bin/Debug/System.Threading.Tasks.Dataflow.dll
+GFF.Model/obj/Debug/GFF.Model.csproj.FileListAbsolute.txt
+GFF.Helper/obj/Debug/GFF.Helper.csproj.FileListAbsolute.txt
+GFF.Component/obj/Debug/GFF.Component.csproj.FileListAbsolute.txt
+GFFClient/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+GFFClient/obj/Debug/GFFClient.csproj.FileListAbsolute.txt
+GFFServer/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+GFFServer/obj/Debug/GFFServer.csproj.FileListAbsolute.txt
