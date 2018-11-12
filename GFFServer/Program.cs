@@ -52,7 +52,7 @@ namespace GFFServer
 
         private static void Server_OnDisconnected(string ID, Exception ex)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", ID, server.ClientCounts));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", ID, server.ClientCounts - 1));
         }
 
         private static void Server_OnError(string ID, Exception ex)
@@ -62,7 +62,7 @@ namespace GFFServer
 
         private static void Server_OnAccepted(IUserToken userToken)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.ID, server.ClientCounts - 1));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.ID, server.ClientCounts));
         }
     }
 }
