@@ -41,7 +41,7 @@ namespace GFFClient
     {
         private Image fileImage = Resources.file;
 
-        public static PushHelper PushHelper = new PushHelper();
+        public static MessageHelper PushHelper = new MessageHelper();
 
         #region 无参构造
 
@@ -128,7 +128,7 @@ namespace GFFClient
             c.Font = content.Font;
             c.Color = content.Color;
             string msg = SerializeHelper.Serialize(c);
-            ThreadPool.QueueUserWorkItem(s => SendMsgToServer(msg));            
+            ThreadPool.QueueUserWorkItem(s => SendMsgToServer(msg));
         }
 
         #endregion
@@ -393,8 +393,9 @@ namespace GFFClient
                 }
                 AppendChatBoxContent(userName, null, content, Color.Blue, false);
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show("发送图片失败：" + ex.Message);
             }
         }
 

@@ -17,42 +17,62 @@
  * 创建说明：
  *****************************************************************************************************/
 
-using System;
 using GFF.Component.Config;
 using GFF.Helper;
-using GFF.Model.Entity;
 using SAEA.MessageSocket;
 using SAEA.MVC;
 using SAEA.Sockets.Interface;
+using System;
 
 namespace GFFServer
 {
     internal class Program
     {
-        private static MessageServer server;
+        private static MessageServer messageServer;
 
         private static SAEAMvcApplication mvcApplication;
 
         private static void Main(string[] args)
         {
-            ConsoleHelper.WriteLine("正在初始化服务器...", ConsoleColor.Green);
-            server = new MessageServer();
-            server.OnAccepted += Server_OnAccepted;
-            server.OnError += Server_OnError;
-            server.OnDisconnected += Server_OnDisconnected;
-            mvcApplication = new SAEAMvcApplication(port: ServerConfig.Instance().FilePort);
-            ConsoleHelper.WriteLine("服务器初始化完毕...", ConsoleColor.Green);
-            ConsoleHelper.WriteLine("正在启动服务器...", ConsoleColor.Green);
-            server.Start();
+            Console.Title = "GFFServer";
+
+
+            ConsoleHelper.WriteLine("正在初始化消息服务器...", ConsoleColor.Green);
+            messageServer = new MessageServer();
+            messageServer.OnAccepted += Server_OnAccepted;
+            messageServer.OnError += Server_OnError;
+            messageServer.OnDisconnected += Server_OnDisconnected;
+            ConsoleHelper.WriteLine("消息服务器初始化完毕...", ConsoleColor.Green);
+
+
+
+            ConsoleHelper.WriteLine("正在初始化文件服务器...", ConsoleColor.DarkYellow);
+            var filePort = ServerConfig.Instance().FilePort;
+            mvcApplication = new SAEAMvcApplication(port: filePort);
+            mvcApplication.SetDefault("File", "Test");
+            ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
+
+
+
+            ConsoleHelper.WriteLine("正在启动消息服务器...", ConsoleColor.Green);
+            messageServer.Start();
+            ConsoleHelper.WriteLine("消息服务器启动完毕...", ConsoleColor.Green);
+
+
+
+            ConsoleHelper.WriteLine("正在启动文件服务器...", ConsoleColor.DarkYellow);
             mvcApplication.Start();
-            ConsoleHelper.WriteLine("服务器启动完毕...", ConsoleColor.Green);
+            ConsoleHelper.WriteLine("文件服务器启动完毕...", ConsoleColor.DarkYellow);
+
+
+
             ConsoleHelper.WriteLine("点击回车，结束服务");
             Console.ReadLine();
         }
 
         private static void Server_OnDisconnected(string ID, Exception ex)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", ID, server.ClientCounts - 1));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已断开连接，当前连接数共记：{1}", ID, messageServer.ClientCounts));
         }
 
         private static void Server_OnError(string ID, Exception ex)
@@ -62,7 +82,7 @@ namespace GFFServer
 
         private static void Server_OnAccepted(IUserToken userToken)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.ID, server.ClientCounts));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", userToken.ID, messageServer.ClientCounts));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using SAEA.Http.Model;
-using SAEA.MVC;
+﻿using SAEA.MVC;
 using System.IO;
 
 namespace GFFServer.Controllers
@@ -9,6 +8,11 @@ namespace GFFServer.Controllers
     /// </summary>
     public class FileController : Controller
     {
+        public ActionResult Test()
+        {
+            return Content("GFF File Server");
+        }
+
         [HttpPost]
         public ActionResult Upload()
         {

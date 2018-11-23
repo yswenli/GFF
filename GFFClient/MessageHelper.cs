@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace GFFClient
 {
-    public class PushHelper
+    public class MessageHelper
     {
         public delegate void OnErrorHander(Exception ex, string msg);
 
@@ -40,7 +40,7 @@ namespace GFFClient
 
         ClientConfig clientConfig;
 
-        public PushHelper()
+        public MessageHelper()
         {
             clientConfig = ClientConfig.Instance();
         }
