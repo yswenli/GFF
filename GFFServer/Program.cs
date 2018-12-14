@@ -38,7 +38,7 @@ namespace GFFServer
 
 
             ConsoleHelper.WriteLine("正在初始化消息服务器...", ConsoleColor.Green);
-            messageServer = new MessageServer();
+            messageServer = new MessageServer(count: 100);
             messageServer.OnAccepted += Server_OnAccepted;
             messageServer.OnError += Server_OnError;
             messageServer.OnDisconnected += Server_OnDisconnected;
@@ -48,7 +48,7 @@ namespace GFFServer
 
             ConsoleHelper.WriteLine("正在初始化文件服务器...", ConsoleColor.DarkYellow);
             var filePort = ServerConfig.Instance().FilePort;
-            mvcApplication = new SAEAMvcApplication(port: filePort);
+            mvcApplication = new SAEAMvcApplication(port: filePort, count: 100);
             mvcApplication.SetDefault("File", "Test");
             ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
 
