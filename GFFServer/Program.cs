@@ -30,7 +30,7 @@ namespace GFFServer
     {
         private static MessageServer messageServer;
 
-        private static SAEAMvcApplication mvcApplication;
+        private static SAEAMvcApplication fileServer;
 
         private static void Main(string[] args)
         {
@@ -44,25 +44,21 @@ namespace GFFServer
             messageServer.OnDisconnected += Server_OnDisconnected;
             ConsoleHelper.WriteLine("消息服务器初始化完毕...", ConsoleColor.Green);
 
-
-
-            ConsoleHelper.WriteLine("正在初始化文件服务器...", ConsoleColor.DarkYellow);
-            var filePort = ServerConfig.Instance().FilePort;
-            mvcApplication = new SAEAMvcApplication(port: filePort, count: 100);
-            mvcApplication.SetDefault("File", "Test");
-            ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
-
-
-
             ConsoleHelper.WriteLine("正在启动消息服务器...", ConsoleColor.Green);
             messageServer.Start();
             ConsoleHelper.WriteLine("消息服务器启动完毕...", ConsoleColor.Green);
 
 
 
+            ConsoleHelper.WriteLine("正在初始化文件服务器...", ConsoleColor.DarkYellow);
+            var filePort = ServerConfig.Instance().FilePort;
+            fileServer = new SAEAMvcApplication(port: filePort);
+            fileServer.SetDefault("File", "Test");
+            ConsoleHelper.WriteLine("文件服务器初始化完毕...", ConsoleColor.DarkYellow);
+
             ConsoleHelper.WriteLine("正在启动文件服务器...", ConsoleColor.DarkYellow);
-            mvcApplication.Start();
-            ConsoleHelper.WriteLine("文件服务器启动完毕...", ConsoleColor.DarkYellow);
+            fileServer.Start();
+            ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
 
 
 

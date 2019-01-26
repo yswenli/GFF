@@ -16,11 +16,12 @@ namespace GFFServer.Controllers
         [HttpPost]
         public ActionResult Upload()
         {
-            var postFile = HttpContext.Request.PostFiles[0];
+            var postFile = HttpContext.Request.PostFiles[0];            
+
             var filePath = HttpContext.Server.MapPath("/Files");
             if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
             filePath = Path.Combine(filePath, postFile.FileName);
-            System.IO.File.WriteAllBytes(filePath, postFile.Data);
+            postFile.Save(filePath);
             return Content("Download?fileName=" + postFile.FileName);
         }
 
