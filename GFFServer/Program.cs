@@ -76,9 +76,11 @@ namespace GFFServer
             ConsoleHelper.WriteErr(ex);
         }
 
-        private static void Server_OnAccepted(string id)
+        private static void Server_OnAccepted(object userToken)
         {
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", id, messageServer.ClientCounts));
+            var ut = userToken as IUserToken;
+
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", ut.ID, messageServer.ClientCounts));
         }
     }
 }
