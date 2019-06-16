@@ -78,9 +78,9 @@ namespace GFFServer
 
         private static void Server_OnAccepted(object userToken)
         {
-            var ut = userToken as IUserToken;
+            var id = userToken.ToString();
 
-            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", ut.ID, messageServer.ClientCounts));
+            ConsoleHelper.WriteInfo(string.Format("客户端{0}已连接，当前连接数共记：{1}", id, messageServer.ClientCounts));
         }
     }
 }

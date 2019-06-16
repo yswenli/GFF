@@ -38,19 +38,19 @@
       <HintPath>..\GFFClient\Dlls\CSkin.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="protobuf-net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.2.4.0\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Common, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Common.4.2.5.6\lib\netstandard2.0\SAEA.Common.dll</HintPath>
+    <Reference Include="SAEA.Common, Version=4.5.6.8, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Common.4.5.6.8\lib\netstandard2.0\SAEA.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.MessageSocket, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.MessageSocket.4.2.5.6\lib\netstandard2.0\SAEA.MessageSocket.dll</HintPath>
+    <Reference Include="SAEA.MessageSocket, Version=4.5.6.8, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.MessageSocket.4.5.6.8\lib\netstandard2.0\SAEA.MessageSocket.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Sockets, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Sockets.4.2.5.6\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
+    <Reference Include="SAEA.Sockets, Version=4.5.6.8, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Sockets.4.5.6.8\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -60,8 +60,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard2.0\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
