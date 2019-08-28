@@ -107,7 +107,7 @@ namespace GFFClient
         {
             try
             {
-                Client.Dispose();
+                //Client.Dispose();
             }
             catch { }
         }
