@@ -16,9 +16,9 @@ namespace GFFServer.Controllers
         [HttpPost]
         public ActionResult Upload()
         {
-            var postFile = HttpContext.Request.PostFiles[0];            
+            var postFile = HttpContext.Current.Request.PostFiles[0];            
 
-            var filePath = HttpContext.Server.MapPath("/Files");
+            var filePath = HttpContext.Current.Server.MapPath("/Files");
             if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
             filePath = Path.Combine(filePath, postFile.FileName);
             postFile.Save(filePath);
@@ -28,7 +28,7 @@ namespace GFFServer.Controllers
 
         public ActionResult Download(string fileName)
         {
-            var filePath = Path.Combine(HttpContext.Server.MapPath("/Files"), fileName);
+            var filePath = Path.Combine(HttpContext.Current.Server.MapPath("/Files"), fileName);
             return File(filePath);
         }
     }
