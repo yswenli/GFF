@@ -202,6 +202,32 @@
       <DependentUpon>EmotionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Emotion\ImageEntity.cs" />
+    <Compile Include="GAudio\AcmChatCodec.cs" />
+    <Compile Include="GAudio\ALawChatCodec.cs" />
+    <Compile Include="GAudio\G722ChatCodec.cs" />
+    <Compile Include="GAudio\Gsm610ChatCodec.cs" />
+    <Compile Include="GAudio\IAudioReceiver.cs" />
+    <Compile Include="GAudio\IAudioSender.cs" />
+    <Compile Include="GAudio\INAudioDemoPlugin.cs" />
+    <Compile Include="GAudio\INetworkChatCodec.cs" />
+    <Compile Include="GAudio\MicrosoftAdpcmChatCodec.cs" />
+    <Compile Include="GAudio\MuLawChatCodec.cs" />
+    <Compile Include="GAudio\NetworkAudioPlayer.cs" />
+    <Compile Include="GAudio\NetworkAudioSender.cs" />
+    <Compile Include="GAudio\NetworkChatPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GAudio\NetworkChatPanel.designer.cs">
+      <DependentUpon>NetworkChatPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GAudio\ReflectionHelper.cs" />
+    <Compile Include="GAudio\SpeexChatCodec.cs" />
+    <Compile Include="GAudio\TcpAudioReceiver.cs" />
+    <Compile Include="GAudio\TcpAudioSender.cs" />
+    <Compile Include="GAudio\TrueSpeechChatCodec.cs" />
+    <Compile Include="GAudio\UdpAudioReceiver.cs" />
+    <Compile Include="GAudio\UdpAudioSender.cs" />
+    <Compile Include="GAudio\UncompressedPcmChatCodec.cs" />
     <Compile Include="NAudio\Codecs\ALawDecoder.cs" />
     <Compile Include="NAudio\Codecs\ALawEncoder.cs" />
     <Compile Include="NAudio\Codecs\Band.cs" />
@@ -752,6 +778,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Emotion\EmotionForm.resx">
       <DependentUpon>EmotionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GAudio\NetworkChatPanel.resx">
+      <DependentUpon>NetworkChatPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NAudio\Gui\Fader.resources" />
     <EmbeddedResource Include="NAudio\Gui\PanSlider.resources" />

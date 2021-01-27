@@ -1,10 +1,9 @@
-﻿using System;
+﻿using GFF.Component.NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using NAudio.Wave;
 using System.Net;
-using NAudioDemo.Utils;
+using System.Windows.Forms;
 
 namespace GFF.Component.GAudio
 {
@@ -36,16 +35,16 @@ namespace GFF.Component.GAudio
 
         private void PopulateCodecsCombo(IEnumerable<INetworkChatCodec> codecs)
         {
-            var sorted = from codec in codecs 
+            var sorted = from codec in codecs
                          where codec.IsAvailable
-                         orderby codec.BitsPerSecond ascending 
+                         orderby codec.BitsPerSecond ascending
                          select codec;
-            
-            foreach(var codec in sorted)
+
+            foreach (var codec in sorted)
             {
                 var bitRate = codec.BitsPerSecond == -1 ? "VBR" : $"{codec.BitsPerSecond / 1000.0:0.#}kbps";
                 var text = $"{codec.Name} ({bitRate})";
-                comboBoxCodecs.Items.Add(new CodecComboItem { Text=text, Codec=codec });
+                comboBoxCodecs.Items.Add(new CodecComboItem { Text = text, Codec = codec });
             }
             comboBoxCodecs.SelectedIndex = 0;
         }
@@ -80,7 +79,7 @@ namespace GFF.Component.GAudio
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(textBoxIPAddress.Text), int.Parse(textBoxPort.Text));
                 int inputDeviceNumber = comboBoxInputDevices.SelectedIndex;
                 selectedCodec = ((CodecComboItem)comboBoxCodecs.SelectedItem).Codec;
-                Connect(endPoint, inputDeviceNumber,selectedCodec);
+                Connect(endPoint, inputDeviceNumber, selectedCodec);
                 buttonStartStreaming.Text = "Disconnect";
             }
             else
@@ -93,7 +92,7 @@ namespace GFF.Component.GAudio
         private void Connect(IPEndPoint endPoint, int inputDeviceNumber, INetworkChatCodec codec)
         {
             var receiver = (comboBoxProtocol.SelectedIndex == 0)
-                ? (IAudioReceiver) new UdpAudioReceiver(endPoint.Port)
+                ? (IAudioReceiver)new UdpAudioReceiver(endPoint.Port)
                 : new TcpAudioReceiver(endPoint.Port);
             var sender = (comboBoxProtocol.SelectedIndex == 0)
                 ? (IAudioSender)new UdpAudioSender(endPoint)
@@ -115,12 +114,12 @@ namespace GFF.Component.GAudio
 
                 // a bit naughty but we have designed the codecs to support multiple calls to Dispose, 
                 // recreating their resources if Encode/Decode called again
-                selectedCodec.Dispose(); 
+                selectedCodec.Dispose();
             }
         }
     }
 
-    public class NetworkChatPanelPlugin : INAudioDemoPlugin
+    public class NetworkChatPanelPlugin : INAudioPlugin
     {
         public string Name => "Network Chat";
 
