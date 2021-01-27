@@ -43,19 +43,17 @@
             // 
             // textBoxIPAddress
             // 
-            this.textBoxIPAddress.Location = new System.Drawing.Point(107, 4);
-            this.textBoxIPAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxIPAddress.Location = new System.Drawing.Point(80, 3);
             this.textBoxIPAddress.Name = "textBoxIPAddress";
-            this.textBoxIPAddress.Size = new System.Drawing.Size(208, 22);
+            this.textBoxIPAddress.Size = new System.Drawing.Size(157, 21);
             this.textBoxIPAddress.TabIndex = 0;
             this.textBoxIPAddress.Text = "127.0.0.1";
             // 
             // textBoxPort
             // 
-            this.textBoxPort.Location = new System.Drawing.Point(107, 36);
-            this.textBoxPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPort.Location = new System.Drawing.Point(80, 27);
             this.textBoxPort.Name = "textBoxPort";
-            this.textBoxPort.Size = new System.Drawing.Size(208, 22);
+            this.textBoxPort.Size = new System.Drawing.Size(157, 21);
             this.textBoxPort.TabIndex = 1;
             this.textBoxPort.Text = "7080";
             // 
@@ -63,28 +61,25 @@
             // 
             this.comboBoxInputDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxInputDevices.FormattingEnabled = true;
-            this.comboBoxInputDevices.Location = new System.Drawing.Point(107, 73);
-            this.comboBoxInputDevices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxInputDevices.Location = new System.Drawing.Point(80, 55);
             this.comboBoxInputDevices.Name = "comboBoxInputDevices";
-            this.comboBoxInputDevices.Size = new System.Drawing.Size(321, 24);
+            this.comboBoxInputDevices.Size = new System.Drawing.Size(242, 20);
             this.comboBoxInputDevices.TabIndex = 2;
             // 
             // comboBoxCodecs
             // 
             this.comboBoxCodecs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCodecs.FormattingEnabled = true;
-            this.comboBoxCodecs.Location = new System.Drawing.Point(107, 106);
-            this.comboBoxCodecs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxCodecs.Location = new System.Drawing.Point(80, 80);
             this.comboBoxCodecs.Name = "comboBoxCodecs";
-            this.comboBoxCodecs.Size = new System.Drawing.Size(321, 24);
+            this.comboBoxCodecs.Size = new System.Drawing.Size(242, 20);
             this.comboBoxCodecs.TabIndex = 3;
             // 
             // buttonStartStreaming
             // 
-            this.buttonStartStreaming.Location = new System.Drawing.Point(7, 207);
-            this.buttonStartStreaming.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonStartStreaming.Location = new System.Drawing.Point(5, 155);
             this.buttonStartStreaming.Name = "buttonStartStreaming";
-            this.buttonStartStreaming.Size = new System.Drawing.Size(172, 28);
+            this.buttonStartStreaming.Size = new System.Drawing.Size(129, 21);
             this.buttonStartStreaming.TabIndex = 4;
             this.buttonStartStreaming.Text = "Start Streaming";
             this.buttonStartStreaming.UseVisualStyleBackColor = true;
@@ -93,50 +88,45 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 6);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(3, 4);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.Size = new System.Drawing.Size(71, 12);
             this.label1.TabIndex = 6;
             this.label1.Text = "IP Address:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 39);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(3, 29);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 17);
+            this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 6;
             this.label2.Text = "Port";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 76);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(2, 57);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 17);
+            this.label3.Size = new System.Drawing.Size(83, 12);
             this.label3.TabIndex = 7;
             this.label3.Text = "Input Device:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 110);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(3, 82);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(90, 17);
+            this.label4.Size = new System.Drawing.Size(71, 12);
             this.label4.TabIndex = 8;
             this.label4.Text = "Compression";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 144);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(3, 108);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 17);
+            this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 10;
             this.label5.Text = "Protocol";
             // 
@@ -144,15 +134,14 @@
             // 
             this.comboBoxProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxProtocol.FormattingEnabled = true;
-            this.comboBoxProtocol.Location = new System.Drawing.Point(107, 140);
-            this.comboBoxProtocol.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxProtocol.Location = new System.Drawing.Point(80, 105);
             this.comboBoxProtocol.Name = "comboBoxProtocol";
-            this.comboBoxProtocol.Size = new System.Drawing.Size(321, 24);
+            this.comboBoxProtocol.Size = new System.Drawing.Size(242, 20);
             this.comboBoxProtocol.TabIndex = 9;
             // 
             // NetworkChatPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label5);
             this.Controls.Add(this.comboBoxProtocol);
@@ -165,9 +154,8 @@
             this.Controls.Add(this.comboBoxInputDevices);
             this.Controls.Add(this.textBoxPort);
             this.Controls.Add(this.textBoxIPAddress);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "NetworkChatPanel";
-            this.Size = new System.Drawing.Size(791, 281);
+            this.Size = new System.Drawing.Size(593, 211);
             this.ResumeLayout(false);
             this.PerformLayout();
 

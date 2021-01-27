@@ -21,7 +21,6 @@ using GFF.Component.Config;
 using GFF.Helper;
 using SAEA.MessageSocket;
 using SAEA.MVC;
-using SAEA.Sockets.Interface;
 using System;
 
 namespace GFFServer
@@ -59,8 +58,6 @@ namespace GFFServer
             ConsoleHelper.WriteLine("正在启动文件服务器...", ConsoleColor.DarkYellow);
             fileServer.Start();
             ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
-
-
 
             ConsoleHelper.WriteLine("点击回车，结束服务");
             Console.ReadLine();

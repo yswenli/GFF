@@ -112,8 +112,6 @@ namespace GFF.Component.GAudio
                 player.Dispose();
                 audioSender.Dispose();
 
-                // a bit naughty but we have designed the codecs to support multiple calls to Dispose, 
-                // recreating their resources if Encode/Decode called again
                 selectedCodec.Dispose();
             }
         }
