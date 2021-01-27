@@ -1,10 +1,10 @@
-using NAudio.CoreAudioApi.Interfaces;
+using GFF.Component.NAudio.CoreAudioApi.Interfaces;
 using System;
 using System.Runtime.InteropServices;
 
 namespace GFF.Component.NAudio.CoreAudioApi
 {
-	public class AudioEndpointVolumeChannel
+    public class AudioEndpointVolumeChannel
 	{
 		private readonly uint channel;
 

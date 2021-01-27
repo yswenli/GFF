@@ -1,10 +1,9 @@
-using NAudio.CoreAudioApi.Interfaces;
-using System;
+using GFF.Component.NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace GFF.Component.NAudio.CoreAudioApi
 {
-	public class SessionCollection
+    public class SessionCollection
 	{
 		private readonly IAudioSessionEnumerator audioSessionEnumerator;
 

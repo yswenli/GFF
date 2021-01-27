@@ -1,4 +1,4 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.Wave

@@ -1,9 +1,9 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.MediaFoundation
 {
-	public static class MediaFoundationTransformCategories
+    public static class MediaFoundationTransformCategories
 	{
 		[FieldDescription("Video Decoder")]
 		public static readonly Guid VideoDecoder = new Guid("{d6c02d4b-6833-45b4-971a-05a4b04bab91}");

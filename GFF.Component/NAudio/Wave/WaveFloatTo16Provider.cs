@@ -1,9 +1,9 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.Wave
 {
-	public class WaveFloatTo16Provider : IWaveProvider
+    public class WaveFloatTo16Provider : IWaveProvider
 	{
 		private readonly IWaveProvider sourceProvider;
 

@@ -1,9 +1,9 @@
-using NAudio.Dmo;
+using GFF.Component.NAudio.Dmo;
 using System;
 
 namespace GFF.Component.NAudio.Wave
 {
-	public class ResamplerDmoStream : WaveStream
+    public class ResamplerDmoStream : WaveStream
 	{
 		private readonly IWaveProvider inputProvider;
 

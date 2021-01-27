@@ -1,9 +1,9 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.MediaFoundation
 {
-	public static class AudioSubtypes
+    public static class AudioSubtypes
 	{
 		[FieldDescription("AAC")]
 		public static readonly Guid MFAudioFormat_AAC = new Guid("00001610-0000-0010-8000-00aa00389b71");

@@ -1,9 +1,9 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.MediaFoundation
 {
-	public static class MediaTypes
+    public static class MediaTypes
 	{
 		public static readonly Guid MFMediaType_Default = new Guid("81A412E6-8103-4B06-857F-1862781024AC");
 

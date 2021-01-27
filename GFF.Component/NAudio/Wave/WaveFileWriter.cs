@@ -1,353 +1,442 @@
-using NAudio.Utils;
-using NAudio.Wave.SampleProviders;
+using GFF.Component.NAudio.Utils;
+using GFF.Component.NAudio.Wave.SampleProviders;
 using System;
 using System.IO;
-using System.Text;
 
 namespace GFF.Component.NAudio.Wave
 {
-	public class WaveFileWriter : Stream
-	{
-		private Stream outStream;
+    /// <summary>
+    /// This class writes WAV data to a .wav file on disk
+    /// </summary>
+    public class WaveFileWriter : Stream
+    {
+        private Stream outStream;
+        private readonly BinaryWriter writer;
+        private long dataSizePos;
+        private long factSampleCountPos;
+        private long dataChunkSize;
+        private readonly WaveFormat format;
+        private readonly string filename;
 
-		private readonly BinaryWriter writer;
+        /// <summary>
+        /// Creates a 16 bit Wave File from an ISampleProvider
+        /// BEWARE: the source provider must not return data indefinitely
+        /// </summary>
+        /// <param name="filename">The filename to write to</param>
+        /// <param name="sourceProvider">The source sample provider</param>
+        public static void CreateWaveFile16(string filename, ISampleProvider sourceProvider)
+        {
+            CreateWaveFile(filename, new SampleToWaveProvider16(sourceProvider));
+        }
 
-		private long dataSizePos;
+        /// <summary>
+        /// Creates a Wave file by reading all the data from a WaveProvider
+        /// BEWARE: the WaveProvider MUST return 0 from its Read method when it is finished,
+        /// or the Wave File will grow indefinitely.
+        /// </summary>
+        /// <param name="filename">The filename to use</param>
+        /// <param name="sourceProvider">The source WaveProvider</param>
+        public static void CreateWaveFile(string filename, IWaveProvider sourceProvider)
+        {
+            using (var writer = new WaveFileWriter(filename, sourceProvider.WaveFormat))
+            {
+                var buffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
+                while (true)
+                {
+                    int bytesRead = sourceProvider.Read(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        // end of source provider
+                        break;
+                    }
+                    // Write will throw exception if WAV file becomes too large
+                    writer.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
 
-		private long factSampleCountPos;
+        /// <summary>
+        /// Writes to a stream by reading all the data from a WaveProvider
+        /// BEWARE: the WaveProvider MUST return 0 from its Read method when it is finished,
+        /// or the Wave File will grow indefinitely.
+        /// </summary>
+        /// <param name="outStream">The stream the method will output to</param>
+        /// <param name="sourceProvider">The source WaveProvider</param>
+        public static void WriteWavFileToStream(Stream outStream, IWaveProvider sourceProvider)
+        {
+            using (var writer = new WaveFileWriter(new IgnoreDisposeStream(outStream), sourceProvider.WaveFormat))
+            {
+                var buffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
+                while (true)
+                {
+                    var bytesRead = sourceProvider.Read(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        // end of source provider
+                        outStream.Flush();
+                        break;
+                    }
 
-		private long dataChunkSize;
+                    writer.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
 
-		private readonly WaveFormat format;
+        /// <summary>
+        /// WaveFileWriter that actually writes to a stream
+        /// </summary>
+        /// <param name="outStream">Stream to be written to</param>
+        /// <param name="format">Wave format to use</param>
+        public WaveFileWriter(Stream outStream, WaveFormat format)
+        {
+            this.outStream = outStream;
+            this.format = format;
+            writer = new BinaryWriter(outStream, System.Text.Encoding.UTF8);
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("RIFF"));
+            writer.Write((int)0); // placeholder
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("WAVE"));
 
-		private readonly string filename;
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("fmt "));
+            format.Serialize(writer);
 
-		private readonly byte[] value24 = new byte[3];
+            CreateFactChunk();
+            WriteDataChunkHeader();
+        }
 
-		public string Filename
-		{
-			get
-			{
-				return this.filename;
-			}
-		}
+        /// <summary>
+        /// Creates a new WaveFileWriter
+        /// </summary>
+        /// <param name="filename">The filename to write to</param>
+        /// <param name="format">The Wave Format of the output data</param>
+        public WaveFileWriter(string filename, WaveFormat format)
+            : this(new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read), format)
+        {
+            this.filename = filename;
+        }
 
-		public override long Length
-		{
-			get
-			{
-				return this.dataChunkSize;
-			}
-		}
+        private void WriteDataChunkHeader()
+        {
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("data"));
+            dataSizePos = outStream.Position;
+            writer.Write((int)0); // placeholder
+        }
 
-		public WaveFormat WaveFormat
-		{
-			get
-			{
-				return this.format;
-			}
-		}
+        private void CreateFactChunk()
+        {
+            if (HasFactChunk())
+            {
+                writer.Write(System.Text.Encoding.UTF8.GetBytes("fact"));
+                writer.Write((int)4);
+                factSampleCountPos = outStream.Position;
+                writer.Write((int)0); // number of samples
+            }
+        }
 
-		public override bool CanRead
-		{
-			get
-			{
-				return false;
-			}
-		}
+        private bool HasFactChunk()
+        {
+            return format.Encoding != WaveFormatEncoding.Pcm &&
+                format.BitsPerSample != 0;
+        }
 
-		public override bool CanWrite
-		{
-			get
-			{
-				return true;
-			}
-		}
+        /// <summary>
+        /// The wave file name or null if not applicable
+        /// </summary>
+        public string Filename => filename;
 
-		public override bool CanSeek
-		{
-			get
-			{
-				return false;
-			}
-		}
+        /// <summary>
+        /// Number of bytes of audio in the data chunk
+        /// </summary>
+        public override long Length => dataChunkSize;
 
-		public override long Position
-		{
-			get
-			{
-				return this.dataChunkSize;
-			}
-			set
-			{
-				throw new InvalidOperationException("Repositioning a WaveFileWriter is not supported");
-			}
-		}
+        /// <summary>
+        /// Total time (calculated from Length and average bytes per second)
+        /// </summary>
+        public TimeSpan TotalTime => TimeSpan.FromSeconds((double)Length / WaveFormat.AverageBytesPerSecond);
 
-		public static void CreateWaveFile16(string filename, ISampleProvider sourceProvider)
-		{
-			WaveFileWriter.CreateWaveFile(filename, new SampleToWaveProvider16(sourceProvider));
-		}
+        /// <summary>
+        /// WaveFormat of this wave file
+        /// </summary>
+        public WaveFormat WaveFormat => format;
 
-		public static void CreateWaveFile(string filename, IWaveProvider sourceProvider)
-		{
-			using (WaveFileWriter waveFileWriter = new WaveFileWriter(filename, sourceProvider.WaveFormat))
-			{
-				byte[] array = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
-				while (true)
-				{
-					int num = sourceProvider.Read(array, 0, array.Length);
-					if (num == 0)
-					{
-						break;
-					}
-					waveFileWriter.Write(array, 0, num);
-				}
-			}
-		}
+        /// <summary>
+        /// Returns false: Cannot read from a WaveFileWriter
+        /// </summary>
+        public override bool CanRead => false;
 
-		public static void WriteWavFileToStream(Stream outStream, IWaveProvider sourceProvider)
-		{
-			using (WaveFileWriter waveFileWriter = new WaveFileWriter(new IgnoreDisposeStream(outStream), sourceProvider.WaveFormat))
-			{
-				byte[] array = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
-				while (true)
-				{
-					int num = sourceProvider.Read(array, 0, array.Length);
-					if (num == 0)
-					{
-						break;
-					}
-					waveFileWriter.Write(array, 0, num);
-				}
-				outStream.Flush();
-			}
-		}
+        /// <summary>
+        /// Returns true: Can write to a WaveFileWriter
+        /// </summary>
+        public override bool CanWrite => true;
 
-		public WaveFileWriter(Stream outStream, WaveFormat format)
-		{
-			this.outStream = outStream;
-			this.format = format;
-			this.writer = new BinaryWriter(outStream, Encoding.UTF8);
-			this.writer.Write(Encoding.UTF8.GetBytes("RIFF"));
-			this.writer.Write(0);
-			this.writer.Write(Encoding.UTF8.GetBytes("WAVE"));
-			this.writer.Write(Encoding.UTF8.GetBytes("fmt "));
-			format.Serialize(this.writer);
-			this.CreateFactChunk();
-			this.WriteDataChunkHeader();
-		}
+        /// <summary>
+        /// Returns false: Cannot seek within a WaveFileWriter
+        /// </summary>
+        public override bool CanSeek => false;
 
-		public WaveFileWriter(string filename, WaveFormat format) : this(new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read), format)
-		{
-			this.filename = filename;
-		}
+        /// <summary>
+        /// Read is not supported for a WaveFileWriter
+        /// </summary>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            throw new InvalidOperationException("Cannot read from a WaveFileWriter");
+        }
 
-		private void WriteDataChunkHeader()
-		{
-			this.writer.Write(Encoding.UTF8.GetBytes("data"));
-			this.dataSizePos = this.outStream.Position;
-			this.writer.Write(0);
-		}
+        /// <summary>
+        /// Seek is not supported for a WaveFileWriter
+        /// </summary>
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            throw new InvalidOperationException("Cannot seek within a WaveFileWriter");
+        }
 
-		private void CreateFactChunk()
-		{
-			if (this.HasFactChunk())
-			{
-				this.writer.Write(Encoding.UTF8.GetBytes("fact"));
-				this.writer.Write(4);
-				this.factSampleCountPos = this.outStream.Position;
-				this.writer.Write(0);
-			}
-		}
+        /// <summary>
+        /// SetLength is not supported for WaveFileWriter
+        /// </summary>
+        /// <param name="value"></param>
+        public override void SetLength(long value)
+        {
+            throw new InvalidOperationException("Cannot set length of a WaveFileWriter");
+        }
 
-		private bool HasFactChunk()
-		{
-			return this.format.Encoding != WaveFormatEncoding.Pcm && this.format.BitsPerSample != 0;
-		}
+        /// <summary>
+        /// Gets the Position in the WaveFile (i.e. number of bytes written so far)
+        /// </summary>
+        public override long Position
+        {
+            get => dataChunkSize;
+            set => throw new InvalidOperationException("Repositioning a WaveFileWriter is not supported");
+        }
 
-		public override int Read(byte[] buffer, int offset, int count)
-		{
-			throw new InvalidOperationException("Cannot read from a WaveFileWriter");
-		}
+        /// <summary>
+        /// Appends bytes to the WaveFile (assumes they are already in the correct format)
+        /// </summary>
+        /// <param name="data">the buffer containing the wave data</param>
+        /// <param name="offset">the offset from which to start writing</param>
+        /// <param name="count">the number of bytes to write</param>
+        [Obsolete("Use Write instead")]
+        public void WriteData(byte[] data, int offset, int count)
+        {
+            Write(data, offset, count);
+        }
 
-		public override long Seek(long offset, SeekOrigin origin)
-		{
-			throw new InvalidOperationException("Cannot seek within a WaveFileWriter");
-		}
+        /// <summary>
+        /// Appends bytes to the WaveFile (assumes they are already in the correct format)
+        /// </summary>
+        /// <param name="data">the buffer containing the wave data</param>
+        /// <param name="offset">the offset from which to start writing</param>
+        /// <param name="count">the number of bytes to write</param>
+        public override void Write(byte[] data, int offset, int count)
+        {
+            if (outStream.Length + count > UInt32.MaxValue)
+                throw new ArgumentException("WAV file too large", nameof(count));
+            outStream.Write(data, offset, count);
+            dataChunkSize += count;
+        }
 
-		public override void SetLength(long value)
-		{
-			throw new InvalidOperationException("Cannot set length of a WaveFileWriter");
-		}
+        private readonly byte[] value24 = new byte[3]; // keep this around to save us creating it every time
 
-		[Obsolete("Use Write instead")]
-		public void WriteData(byte[] data, int offset, int count)
-		{
-			this.Write(data, offset, count);
-		}
+        /// <summary>
+        /// Writes a single sample to the Wave file
+        /// </summary>
+        /// <param name="sample">the sample to write (assumed floating point with 1.0f as max value)</param>
+        public void WriteSample(float sample)
+        {
+            if (WaveFormat.BitsPerSample == 16)
+            {
+                writer.Write((Int16)(Int16.MaxValue * sample));
+                dataChunkSize += 2;
+            }
+            else if (WaveFormat.BitsPerSample == 24)
+            {
+                var value = BitConverter.GetBytes((Int32)(Int32.MaxValue * sample));
+                value24[0] = value[1];
+                value24[1] = value[2];
+                value24[2] = value[3];
+                writer.Write(value24);
+                dataChunkSize += 3;
+            }
+            else if (WaveFormat.BitsPerSample == 32 && WaveFormat.Encoding == WaveFormatEncoding.Extensible)
+            {
+                writer.Write(UInt16.MaxValue * (Int32)sample);
+                dataChunkSize += 4;
+            }
+            else if (WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
+            {
+                writer.Write(sample);
+                dataChunkSize += 4;
+            }
+            else
+            {
+                throw new InvalidOperationException("Only 16, 24 or 32 bit PCM or IEEE float audio data supported");
+            }
+        }
 
-		public override void Write(byte[] data, int offset, int count)
-		{
-			if (this.outStream.Length + (long)count > (long)((ulong)-1))
-			{
-				throw new ArgumentException("WAV file too large", "count");
-			}
-			this.outStream.Write(data, offset, count);
-			this.dataChunkSize += (long)count;
-		}
+        /// <summary>
+        /// Writes 32 bit floating point samples to the Wave file
+        /// They will be converted to the appropriate bit depth depending on the WaveFormat of the WAV file
+        /// </summary>
+        /// <param name="samples">The buffer containing the floating point samples</param>
+        /// <param name="offset">The offset from which to start writing</param>
+        /// <param name="count">The number of floating point samples to write</param>
+        public void WriteSamples(float[] samples, int offset, int count)
+        {
+            for (int n = 0; n < count; n++)
+            {
+                WriteSample(samples[offset + n]);
+            }
+        }
 
-		public void WriteSample(float sample)
-		{
-			if (this.WaveFormat.BitsPerSample == 16)
-			{
-				this.writer.Write((short)(32767f * sample));
-				this.dataChunkSize += 2L;
-				return;
-			}
-			if (this.WaveFormat.BitsPerSample == 24)
-			{
-				byte[] bytes = BitConverter.GetBytes((int)(2.14748365E+09f * sample));
-				this.value24[0] = bytes[1];
-				this.value24[1] = bytes[2];
-				this.value24[2] = bytes[3];
-				this.writer.Write(this.value24);
-				this.dataChunkSize += 3L;
-				return;
-			}
-			if (this.WaveFormat.BitsPerSample == 32 && this.WaveFormat.Encoding == WaveFormatEncoding.Extensible)
-			{
-				this.writer.Write(65535 * (int)sample);
-				this.dataChunkSize += 4L;
-				return;
-			}
-			if (this.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
-			{
-				this.writer.Write(sample);
-				this.dataChunkSize += 4L;
-				return;
-			}
-			throw new InvalidOperationException("Only 16, 24 or 32 bit PCM or IEEE float audio data supported");
-		}
+        /// <summary>
+        /// Writes 16 bit samples to the Wave file
+        /// </summary>
+        /// <param name="samples">The buffer containing the 16 bit samples</param>
+        /// <param name="offset">The offset from which to start writing</param>
+        /// <param name="count">The number of 16 bit samples to write</param>
+        [Obsolete("Use WriteSamples instead")]
+        public void WriteData(short[] samples, int offset, int count)
+        {
+            WriteSamples(samples, offset, count);
+        }
 
-		public void WriteSamples(float[] samples, int offset, int count)
-		{
-			for (int i = 0; i < count; i++)
-			{
-				this.WriteSample(samples[offset + i]);
-			}
-		}
 
-		[Obsolete("Use WriteSamples instead")]
-		public void WriteData(short[] samples, int offset, int count)
-		{
-			this.WriteSamples(samples, offset, count);
-		}
+        /// <summary>
+        /// Writes 16 bit samples to the Wave file
+        /// </summary>
+        /// <param name="samples">The buffer containing the 16 bit samples</param>
+        /// <param name="offset">The offset from which to start writing</param>
+        /// <param name="count">The number of 16 bit samples to write</param>
+        public void WriteSamples(short[] samples, int offset, int count)
+        {
+            // 16 bit PCM data
+            if (WaveFormat.BitsPerSample == 16)
+            {
+                for (int sample = 0; sample < count; sample++)
+                {
+                    writer.Write(samples[sample + offset]);
+                }
+                dataChunkSize += (count * 2);
+            }
+            // 24 bit PCM data
+            else if (WaveFormat.BitsPerSample == 24)
+            {
+                for (int sample = 0; sample < count; sample++)
+                {
+                    var value = BitConverter.GetBytes(UInt16.MaxValue * (Int32)samples[sample + offset]);
+                    value24[0] = value[1];
+                    value24[1] = value[2];
+                    value24[2] = value[3];
+                    writer.Write(value24);
+                }
+                dataChunkSize += (count * 3);
+            }
+            // 32 bit PCM data
+            else if (WaveFormat.BitsPerSample == 32 && WaveFormat.Encoding == WaveFormatEncoding.Extensible)
+            {
+                for (int sample = 0; sample < count; sample++)
+                {
+                    writer.Write(UInt16.MaxValue * (Int32)samples[sample + offset]);
+                }
+                dataChunkSize += (count * 4);
+            }
+            // IEEE float data
+            else if (WaveFormat.BitsPerSample == 32 && WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
+            {
+                for (int sample = 0; sample < count; sample++)
+                {
+                    writer.Write((float)samples[sample + offset] / (float)(Int16.MaxValue + 1));
+                }
+                dataChunkSize += (count * 4);
+            }
+            else
+            {
+                throw new InvalidOperationException("Only 16, 24 or 32 bit PCM or IEEE float audio data supported");
+            }
+        }
 
-		public void WriteSamples(short[] samples, int offset, int count)
-		{
-			if (this.WaveFormat.BitsPerSample == 16)
-			{
-				for (int i = 0; i < count; i++)
-				{
-					this.writer.Write(samples[i + offset]);
-				}
-				this.dataChunkSize += (long)(count * 2);
-				return;
-			}
-			if (this.WaveFormat.BitsPerSample == 24)
-			{
-				for (int j = 0; j < count; j++)
-				{
-					byte[] bytes = BitConverter.GetBytes(65535 * (int)samples[j + offset]);
-					this.value24[0] = bytes[1];
-					this.value24[1] = bytes[2];
-					this.value24[2] = bytes[3];
-					this.writer.Write(this.value24);
-				}
-				this.dataChunkSize += (long)(count * 3);
-				return;
-			}
-			if (this.WaveFormat.BitsPerSample == 32 && this.WaveFormat.Encoding == WaveFormatEncoding.Extensible)
-			{
-				for (int k = 0; k < count; k++)
-				{
-					this.writer.Write(65535 * (int)samples[k + offset]);
-				}
-				this.dataChunkSize += (long)(count * 4);
-				return;
-			}
-			if (this.WaveFormat.BitsPerSample == 32 && this.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
-			{
-				for (int l = 0; l < count; l++)
-				{
-					this.writer.Write((float)samples[l + offset] / 32768f);
-				}
-				this.dataChunkSize += (long)(count * 4);
-				return;
-			}
-			throw new InvalidOperationException("Only 16, 24 or 32 bit PCM or IEEE float audio data supported");
-		}
+        /// <summary>
+        /// Ensures data is written to disk
+        /// Also updates header, so that WAV file will be valid up to the point currently written
+        /// </summary>
+        public override void Flush()
+        {
+            var pos = writer.BaseStream.Position;
+            UpdateHeader(writer);
+            writer.BaseStream.Position = pos;
+        }
 
-		public override void Flush()
-		{
-			long position = this.writer.BaseStream.Position;
-			this.UpdateHeader(this.writer);
-			this.writer.BaseStream.Position = position;
-		}
+        #region IDisposable Members
 
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && this.outStream != null)
-			{
-				try
-				{
-					this.UpdateHeader(this.writer);
-				}
-				finally
-				{
-					this.outStream.Close();
-					this.outStream = null;
-				}
-			}
-		}
+        /// <summary>
+        /// Actually performs the close,making sure the header contains the correct data
+        /// </summary>
+        /// <param name="disposing">True if called from <see>Dispose</see></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (outStream != null)
+                {
+                    try
+                    {
+                        UpdateHeader(writer);
+                    }
+                    finally
+                    {
+                        // in a finally block as we don't want the FileStream to run its disposer in
+                        // the GC thread if the code above caused an IOException (e.g. due to disk full)
+                        outStream.Dispose(); // will close the underlying base stream
+                        outStream = null;
+                    }
+                }
+            }
+        }
 
-		protected virtual void UpdateHeader(BinaryWriter writer)
-		{
-			writer.Flush();
-			this.UpdateRiffChunk(writer);
-			this.UpdateFactChunk(writer);
-			this.UpdateDataChunk(writer);
-		}
+        /// <summary>
+        /// Updates the header with file size information
+        /// </summary>
+        protected virtual void UpdateHeader(BinaryWriter writer)
+        {
+            writer.Flush();
+            UpdateRiffChunk(writer);
+            UpdateFactChunk(writer);
+            UpdateDataChunk(writer);
+        }
 
-		private void UpdateDataChunk(BinaryWriter writer)
-		{
-			writer.Seek((int)this.dataSizePos, SeekOrigin.Begin);
-			writer.Write((uint)this.dataChunkSize);
-		}
+        private void UpdateDataChunk(BinaryWriter writer)
+        {
+            writer.Seek((int)dataSizePos, SeekOrigin.Begin);
+            writer.Write((UInt32)dataChunkSize);
+        }
 
-		private void UpdateRiffChunk(BinaryWriter writer)
-		{
-			writer.Seek(4, SeekOrigin.Begin);
-			writer.Write((uint)(this.outStream.Length - 8L));
-		}
+        private void UpdateRiffChunk(BinaryWriter writer)
+        {
+            writer.Seek(4, SeekOrigin.Begin);
+            writer.Write((UInt32)(outStream.Length - 8));
+        }
 
-		private void UpdateFactChunk(BinaryWriter writer)
-		{
-			if (this.HasFactChunk())
-			{
-				int num = this.format.BitsPerSample * this.format.Channels;
-				if (num != 0)
-				{
-					writer.Seek((int)this.factSampleCountPos, SeekOrigin.Begin);
-					writer.Write((int)(this.dataChunkSize * 8L / (long)num));
-				}
-			}
-		}
+        private void UpdateFactChunk(BinaryWriter writer)
+        {
+            if (HasFactChunk())
+            {
+                int bitsPerSample = (format.BitsPerSample * format.Channels);
+                if (bitsPerSample != 0)
+                {
+                    writer.Seek((int)factSampleCountPos, SeekOrigin.Begin);
 
-		~WaveFileWriter()
-		{
-			this.Dispose(false);
-		}
-	}
+                    writer.Write((int)((dataChunkSize * 8) / bitsPerSample));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finaliser - should only be called if the user forgot to close this WaveFileWriter
+        /// </summary>
+        ~WaveFileWriter()
+        {
+            System.Diagnostics.Debug.Assert(false, "WaveFileWriter was not disposed");
+            Dispose(false);
+        }
+
+        #endregion
+    }
 }

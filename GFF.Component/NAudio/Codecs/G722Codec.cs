@@ -2,716 +2,483 @@ using System;
 
 namespace GFF.Component.NAudio.Codecs
 {
-	public class G722Codec
-	{
-		private static readonly int[] wl = new int[]
-		{
-			-60,
-			-30,
-			58,
-			172,
-			334,
-			538,
-			1198,
-			3042
-		};
+    /// <summary>
+    /// SpanDSP - a series of DSP components for telephony
+    /// 
+    /// g722_decode.c - The ITU G.722 codec, decode part.
+    /// 
+    /// Written by Steve Underwood &lt;steveu@coppice.org&gt;
+    /// 
+    /// Copyright (C) 2005 Steve Underwood
+    /// Ported to C# by Mark Heath 2011
+    /// 
+    /// Despite my general liking of the GPL, I place my own contributions 
+    /// to this code in the public domain for the benefit of all mankind -
+    /// even the slimy ones who might try to proprietize my work and use it
+    /// to my detriment.
+    ///  
+    /// Based in part on a single channel G.722 codec which is:
+    /// Copyright (c) CMU 1993
+    /// Computer Science, Speech Group
+    /// Chengxiang Lu and Alex Hauptmann
+    /// </summary>
+    public class G722Codec
+    {
+        /// <summary>
+        /// hard limits to 16 bit samples
+        /// </summary>
+        static short Saturate(int amp)
+        {
+            short amp16;
 
-		private static readonly int[] rl42 = new int[]
-		{
-			0,
-			7,
-			6,
-			5,
-			4,
-			3,
-			2,
-			1,
-			7,
-			6,
-			5,
-			4,
-			3,
-			2,
-			1,
-			0
-		};
+            // Hopefully this is optimised for the common case - not clipping
+            amp16 = (short)amp;
+            if (amp == amp16)
+                return amp16;
+            if (amp > Int16.MaxValue)
+                return Int16.MaxValue;
+            return Int16.MinValue;
+        }
 
-		private static readonly int[] ilb = new int[]
-		{
-			2048,
-			2093,
-			2139,
-			2186,
-			2233,
-			2282,
-			2332,
-			2383,
-			2435,
-			2489,
-			2543,
-			2599,
-			2656,
-			2714,
-			2774,
-			2834,
-			2896,
-			2960,
-			3025,
-			3091,
-			3158,
-			3228,
-			3298,
-			3371,
-			3444,
-			3520,
-			3597,
-			3676,
-			3756,
-			3838,
-			3922,
-			4008
-		};
+        static void Block4(G722CodecState s, int band, int d)
+        {
+            int wd1;
+            int wd2;
+            int wd3;
+            int i;
 
-		private static readonly int[] wh = new int[]
-		{
-			0,
-			-214,
-			798
-		};
+            // Block 4, RECONS
+            s.Band[band].d[0] = d;
+            s.Band[band].r[0] = Saturate(s.Band[band].s + d);
 
-		private static readonly int[] rh2 = new int[]
-		{
-			2,
-			1,
-			2,
-			1
-		};
+            // Block 4, PARREC
+            s.Band[band].p[0] = Saturate(s.Band[band].sz + d);
 
-		private static readonly int[] qm2 = new int[]
-		{
-			-7408,
-			-1616,
-			7408,
-			1616
-		};
+            // Block 4, UPPOL2
+            for (i = 0; i < 3; i++)
+                s.Band[band].sg[i] = s.Band[band].p[i] >> 15;
+            wd1 = Saturate(s.Band[band].a[1] << 2);
 
-		private static readonly int[] qm4 = new int[]
-		{
-			0,
-			-20456,
-			-12896,
-			-8968,
-			-6288,
-			-4240,
-			-2584,
-			-1200,
-			20456,
-			12896,
-			8968,
-			6288,
-			4240,
-			2584,
-			1200,
-			0
-		};
+            wd2 = (s.Band[band].sg[0] == s.Band[band].sg[1]) ? -wd1 : wd1;
+            if (wd2 > 32767)
+                wd2 = 32767;
+            wd3 = (s.Band[band].sg[0] == s.Band[band].sg[2]) ? 128 : -128;
+            wd3 += (wd2 >> 7);
+            wd3 += (s.Band[band].a[2] * 32512) >> 15;
+            if (wd3 > 12288)
+                wd3 = 12288;
+            else if (wd3 < -12288)
+                wd3 = -12288;
+            s.Band[band].ap[2] = wd3;
 
-		private static readonly int[] qm5 = new int[]
-		{
-			-280,
-			-280,
-			-23352,
-			-17560,
-			-14120,
-			-11664,
-			-9752,
-			-8184,
-			-6864,
-			-5712,
-			-4696,
-			-3784,
-			-2960,
-			-2208,
-			-1520,
-			-880,
-			23352,
-			17560,
-			14120,
-			11664,
-			9752,
-			8184,
-			6864,
-			5712,
-			4696,
-			3784,
-			2960,
-			2208,
-			1520,
-			880,
-			280,
-			-280
-		};
+            // Block 4, UPPOL1
+            s.Band[band].sg[0] = s.Band[band].p[0] >> 15;
+            s.Band[band].sg[1] = s.Band[band].p[1] >> 15;
+            wd1 = (s.Band[band].sg[0] == s.Band[band].sg[1]) ? 192 : -192;
+            wd2 = (s.Band[band].a[1] * 32640) >> 15;
 
-		private static readonly int[] qm6 = new int[]
-		{
-			-136,
-			-136,
-			-136,
-			-136,
-			-24808,
-			-21904,
-			-19008,
-			-16704,
-			-14984,
-			-13512,
-			-12280,
-			-11192,
-			-10232,
-			-9360,
-			-8576,
-			-7856,
-			-7192,
-			-6576,
-			-6000,
-			-5456,
-			-4944,
-			-4464,
-			-4008,
-			-3576,
-			-3168,
-			-2776,
-			-2400,
-			-2032,
-			-1688,
-			-1360,
-			-1040,
-			-728,
-			24808,
-			21904,
-			19008,
-			16704,
-			14984,
-			13512,
-			12280,
-			11192,
-			10232,
-			9360,
-			8576,
-			7856,
-			7192,
-			6576,
-			6000,
-			5456,
-			4944,
-			4464,
-			4008,
-			3576,
-			3168,
-			2776,
-			2400,
-			2032,
-			1688,
-			1360,
-			1040,
-			728,
-			432,
-			136,
-			-432,
-			-136
-		};
+            s.Band[band].ap[1] = Saturate(wd1 + wd2);
+            wd3 = Saturate(15360 - s.Band[band].ap[2]);
+            if (s.Band[band].ap[1] > wd3)
+                s.Band[band].ap[1] = wd3;
+            else if (s.Band[band].ap[1] < -wd3)
+                s.Band[band].ap[1] = -wd3;
 
-		private static readonly int[] qmf_coeffs = new int[]
-		{
-			3,
-			-11,
-			12,
-			32,
-			-210,
-			951,
-			3876,
-			-805,
-			362,
-			-156,
-			53,
-			-11
-		};
+            // Block 4, UPZERO
+            wd1 = (d == 0) ? 0 : 128;
+            s.Band[band].sg[0] = d >> 15;
+            for (i = 1; i < 7; i++)
+            {
+                s.Band[band].sg[i] = s.Band[band].d[i] >> 15;
+                wd2 = (s.Band[band].sg[i] == s.Band[band].sg[0]) ? wd1 : -wd1;
+                wd3 = (s.Band[band].b[i] * 32640) >> 15;
+                s.Band[band].bp[i] = Saturate(wd2 + wd3);
+            }
 
-		private static readonly int[] q6 = new int[]
-		{
-			0,
-			35,
-			72,
-			110,
-			150,
-			190,
-			233,
-			276,
-			323,
-			370,
-			422,
-			473,
-			530,
-			587,
-			650,
-			714,
-			786,
-			858,
-			940,
-			1023,
-			1121,
-			1219,
-			1339,
-			1458,
-			1612,
-			1765,
-			1980,
-			2195,
-			2557,
-			2919,
-			0,
-			0
-		};
+            // Block 4, DELAYA
+            for (i = 6; i > 0; i--)
+            {
+                s.Band[band].d[i] = s.Band[band].d[i - 1];
+                s.Band[band].b[i] = s.Band[band].bp[i];
+            }
 
-		private static readonly int[] iln = new int[]
-		{
-			0,
-			63,
-			62,
-			31,
-			30,
-			29,
-			28,
-			27,
-			26,
-			25,
-			24,
-			23,
-			22,
-			21,
-			20,
-			19,
-			18,
-			17,
-			16,
-			15,
-			14,
-			13,
-			12,
-			11,
-			10,
-			9,
-			8,
-			7,
-			6,
-			5,
-			4,
-			0
-		};
+            for (i = 2; i > 0; i--)
+            {
+                s.Band[band].r[i] = s.Band[band].r[i - 1];
+                s.Band[band].p[i] = s.Band[band].p[i - 1];
+                s.Band[band].a[i] = s.Band[band].ap[i];
+            }
 
-		private static readonly int[] ilp = new int[]
-		{
-			0,
-			61,
-			60,
-			59,
-			58,
-			57,
-			56,
-			55,
-			54,
-			53,
-			52,
-			51,
-			50,
-			49,
-			48,
-			47,
-			46,
-			45,
-			44,
-			43,
-			42,
-			41,
-			40,
-			39,
-			38,
-			37,
-			36,
-			35,
-			34,
-			33,
-			32,
-			0
-		};
+            // Block 4, FILTEP
+            wd1 = Saturate(s.Band[band].r[1] + s.Band[band].r[1]);
+            wd1 = (s.Band[band].a[1] * wd1) >> 15;
+            wd2 = Saturate(s.Band[band].r[2] + s.Band[band].r[2]);
+            wd2 = (s.Band[band].a[2] * wd2) >> 15;
+            s.Band[band].sp = Saturate(wd1 + wd2);
 
-		private static readonly int[] ihn;
+            // Block 4, FILTEZ
+            s.Band[band].sz = 0;
+            for (i = 6; i > 0; i--)
+            {
+                wd1 = Saturate(s.Band[band].d[i] + s.Band[band].d[i]);
+                s.Band[band].sz += (s.Band[band].b[i] * wd1) >> 15;
+            }
+            s.Band[band].sz = Saturate(s.Band[band].sz);
 
-		private static readonly int[] ihp;
+            // Block 4, PREDIC
+            s.Band[band].s = Saturate(s.Band[band].sp + s.Band[band].sz);
+        }
 
-		private static short Saturate(int amp)
-		{
-			short num = (short)amp;
-			if (amp == (int)num)
-			{
-				return num;
-			}
-			if (amp > 32767)
-			{
-				return 32767;
-			}
-			return -32768;
-		}
+        static readonly int[] wl = { -60, -30, 58, 172, 334, 538, 1198, 3042 };
+        static readonly int[] rl42 = { 0, 7, 6, 5, 4, 3, 2, 1, 7, 6, 5, 4, 3, 2, 1, 0 };
+        static readonly int[] ilb = { 2048, 2093, 2139, 2186, 2233, 2282, 2332, 2383, 2435, 2489, 2543, 2599, 2656, 2714, 2774, 2834, 2896, 2960, 3025, 3091, 3158, 3228, 3298, 3371, 3444, 3520, 3597, 3676, 3756, 3838, 3922, 4008 };
+        static readonly int[] wh = { 0, -214, 798 };
+        static readonly int[] rh2 = { 2, 1, 2, 1 };
+        static readonly int[] qm2 = { -7408, -1616, 7408, 1616 };
+        static readonly int[] qm4 = { 0, -20456, -12896, -8968, -6288, -4240, -2584, -1200, 20456, 12896, 8968, 6288, 4240, 2584, 1200, 0 };
+        static readonly int[] qm5 = { -280, -280, -23352, -17560, -14120, -11664, -9752, -8184, -6864, -5712, -4696, -3784, -2960, -2208, -1520, -880, 23352, 17560, 14120, 11664, 9752, 8184, 6864, 5712, 4696, 3784, 2960, 2208, 1520, 880, 280, -280 };
+        static readonly int[] qm6 = { -136, -136, -136, -136, -24808, -21904, -19008, -16704, -14984, -13512, -12280, -11192, -10232, -9360, -8576, -7856, -7192, -6576, -6000, -5456, -4944, -4464, -4008, -3576, -3168, -2776, -2400, -2032, -1688, -1360, -1040, -728, 24808, 21904, 19008, 16704, 14984, 13512, 12280, 11192, 10232, 9360, 8576, 7856, 7192, 6576, 6000, 5456, 4944, 4464, 4008, 3576, 3168, 2776, 2400, 2032, 1688, 1360, 1040, 728, 432, 136, -432, -136 };
+        static readonly int[] qmf_coeffs = { 3, -11, 12, 32, -210, 951, 3876, -805, 362, -156, 53, -11, };
+        static readonly int[] q6 = { 0, 35, 72, 110, 150, 190, 233, 276, 323, 370, 422, 473, 530, 587, 650, 714, 786, 858, 940, 1023, 1121, 1219, 1339, 1458, 1612, 1765, 1980, 2195, 2557, 2919, 0, 0 };
+        static readonly int[] iln = { 0, 63, 62, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 0 };
+        static readonly int[] ilp = { 0, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 0 };
+        static readonly int[] ihn = { 0, 1, 0 };
+        static readonly int[] ihp = { 0, 3, 2 };
 
-		private static void Block4(G722CodecState s, int band, int d)
-		{
-			s.Band[band].d[0] = d;
-			s.Band[band].r[0] = (int)G722Codec.Saturate(s.Band[band].s + d);
-			s.Band[band].p[0] = (int)G722Codec.Saturate(s.Band[band].sz + d);
-			for (int i = 0; i < 3; i++)
-			{
-				s.Band[band].sg[i] = s.Band[band].p[i] >> 15;
-			}
-			int num = (int)G722Codec.Saturate(s.Band[band].a[1] << 2);
-			int num2 = (s.Band[band].sg[0] == s.Band[band].sg[1]) ? (-num) : num;
-			if (num2 > 32767)
-			{
-				num2 = 32767;
-			}
-			int num3 = (s.Band[band].sg[0] == s.Band[band].sg[2]) ? 128 : -128;
-			num3 += num2 >> 7;
-			num3 += s.Band[band].a[2] * 32512 >> 15;
-			if (num3 > 12288)
-			{
-				num3 = 12288;
-			}
-			else if (num3 < -12288)
-			{
-				num3 = -12288;
-			}
-			s.Band[band].ap[2] = num3;
-			s.Band[band].sg[0] = s.Band[band].p[0] >> 15;
-			s.Band[band].sg[1] = s.Band[band].p[1] >> 15;
-			num = ((s.Band[band].sg[0] == s.Band[band].sg[1]) ? 192 : -192);
-			num2 = s.Band[band].a[1] * 32640 >> 15;
-			s.Band[band].ap[1] = (int)G722Codec.Saturate(num + num2);
-			num3 = (int)G722Codec.Saturate(15360 - s.Band[band].ap[2]);
-			if (s.Band[band].ap[1] > num3)
-			{
-				s.Band[band].ap[1] = num3;
-			}
-			else if (s.Band[band].ap[1] < -num3)
-			{
-				s.Band[band].ap[1] = -num3;
-			}
-			num = ((d == 0) ? 0 : 128);
-			s.Band[band].sg[0] = d >> 15;
-			for (int i = 1; i < 7; i++)
-			{
-				s.Band[band].sg[i] = s.Band[band].d[i] >> 15;
-				num2 = ((s.Band[band].sg[i] == s.Band[band].sg[0]) ? num : (-num));
-				num3 = s.Band[band].b[i] * 32640 >> 15;
-				s.Band[band].bp[i] = (int)G722Codec.Saturate(num2 + num3);
-			}
-			for (int i = 6; i > 0; i--)
-			{
-				s.Band[band].d[i] = s.Band[band].d[i - 1];
-				s.Band[band].b[i] = s.Band[band].bp[i];
-			}
-			for (int i = 2; i > 0; i--)
-			{
-				s.Band[band].r[i] = s.Band[band].r[i - 1];
-				s.Band[band].p[i] = s.Band[band].p[i - 1];
-				s.Band[band].a[i] = s.Band[band].ap[i];
-			}
-			num = (int)G722Codec.Saturate(s.Band[band].r[1] + s.Band[band].r[1]);
-			num = s.Band[band].a[1] * num >> 15;
-			num2 = (int)G722Codec.Saturate(s.Band[band].r[2] + s.Band[band].r[2]);
-			num2 = s.Band[band].a[2] * num2 >> 15;
-			s.Band[band].sp = (int)G722Codec.Saturate(num + num2);
-			s.Band[band].sz = 0;
-			for (int i = 6; i > 0; i--)
-			{
-				num = (int)G722Codec.Saturate(s.Band[band].d[i] + s.Band[band].d[i]);
-				s.Band[band].sz += s.Band[band].b[i] * num >> 15;
-			}
-			s.Band[band].sz = (int)G722Codec.Saturate(s.Band[band].sz);
-			s.Band[band].s = (int)G722Codec.Saturate(s.Band[band].sp + s.Band[band].sz);
-		}
+        /// <summary>
+        /// Decodes a buffer of G722
+        /// </summary>
+        /// <param name="state">Codec state</param>
+        /// <param name="outputBuffer">Output buffer (to contain decompressed PCM samples)</param>
+        /// <param name="inputG722Data"></param>
+        /// <param name="inputLength">Number of bytes in input G722 data to decode</param>
+        /// <returns>Number of samples written into output buffer</returns>
+        public int Decode(G722CodecState state, short[] outputBuffer, byte[] inputG722Data, int inputLength)
+        {
+            int dlowt;
+            int rlow;
+            int ihigh;
+            int dhigh;
+            int rhigh;
+            int xout1;
+            int xout2;
+            int wd1;
+            int wd2;
+            int wd3;
+            int code;
+            int outlen;
+            int i;
+            int j;
 
-		public int Decode(G722CodecState state, short[] outputBuffer, byte[] inputG722Data, int inputLength)
-		{
-			int result = 0;
-			int num = 0;
-			int i = 0;
-			while (i < inputLength)
-			{
-				int num2;
-				if (state.Packed)
-				{
-					if (state.InBits < state.BitsPerSample)
-					{
-						state.InBuffer |= (uint)((uint)inputG722Data[i++] << state.InBits);
-						state.InBits += 8;
-					}
-					num2 = (int)(state.InBuffer & (1u << state.BitsPerSample) - 1u);
-					state.InBuffer >>= state.BitsPerSample;
-					state.InBits -= state.BitsPerSample;
-				}
-				else
-				{
-					num2 = (int)inputG722Data[i++];
-				}
-				int num3;
-				int num5;
-				switch (state.BitsPerSample)
-				{
-				case 6:
-				{
-					num3 = (num2 & 15);
-					int num4 = num2 >> 4 & 3;
-					num5 = G722Codec.qm4[num3];
-					goto IL_113;
-				}
-				case 7:
-				{
-					num3 = (num2 & 31);
-					int num4 = num2 >> 5 & 3;
-					num5 = G722Codec.qm5[num3];
-					num3 >>= 1;
-					goto IL_113;
-				}
-				case 8:
-				{
-					IL_BB:
-					num3 = (num2 & 63);
-					int num4 = num2 >> 6 & 3;
-					num5 = G722Codec.qm6[num3];
-					num3 >>= 2;
-					goto IL_113;
-				}
-				}
-				goto IL_BB;
-				IL_113:
-				num5 = state.Band[0].det * num5 >> 15;
-				int num6 = state.Band[0].s + num5;
-				if (num6 > 16383)
-				{
-					num6 = 16383;
-				}
-				else if (num6 < -16384)
-				{
-					num6 = -16384;
-				}
-				num5 = G722Codec.qm4[num3];
-				int d = state.Band[0].det * num5 >> 15;
-				num5 = G722Codec.rl42[num3];
-				num3 = state.Band[0].nb * 127 >> 7;
-				num3 += G722Codec.wl[num5];
-				if (num3 < 0)
-				{
-					num3 = 0;
-				}
-				else if (num3 > 18432)
-				{
-					num3 = 18432;
-				}
-				state.Band[0].nb = num3;
-				num3 = (state.Band[0].nb >> 6 & 31);
-				num5 = 8 - (state.Band[0].nb >> 11);
-				int num7 = (num5 < 0) ? (G722Codec.ilb[num3] << -num5) : (G722Codec.ilb[num3] >> num5);
-				state.Band[0].det = num7 << 2;
-				G722Codec.Block4(state, 0, d);
-				if (!state.EncodeFrom8000Hz)
-				{
-					int num4;
-					num5 = G722Codec.qm2[num4];
-					int num8 = state.Band[1].det * num5 >> 15;
-					num = num8 + state.Band[1].s;
-					if (num > 16383)
-					{
-						num = 16383;
-					}
-					else if (num < -16384)
-					{
-						num = -16384;
-					}
-					num5 = G722Codec.rh2[num4];
-					num3 = state.Band[1].nb * 127 >> 7;
-					num3 += G722Codec.wh[num5];
-					if (num3 < 0)
-					{
-						num3 = 0;
-					}
-					else if (num3 > 22528)
-					{
-						num3 = 22528;
-					}
-					state.Band[1].nb = num3;
-					num3 = (state.Band[1].nb >> 6 & 31);
-					num5 = 10 - (state.Band[1].nb >> 11);
-					num7 = ((num5 < 0) ? (G722Codec.ilb[num3] << -num5) : (G722Codec.ilb[num3] >> num5));
-					state.Band[1].det = num7 << 2;
-					G722Codec.Block4(state, 1, num8);
-				}
-				if (state.ItuTestMode)
-				{
-					outputBuffer[result++] = (short)(num6 << 1);
-					outputBuffer[result++] = (short)(num << 1);
-				}
-				else if (state.EncodeFrom8000Hz)
-				{
-					outputBuffer[result++] = (short)(num6 << 1);
-				}
-				else
-				{
-					for (int j = 0; j < 22; j++)
-					{
-						state.QmfSignalHistory[j] = state.QmfSignalHistory[j + 2];
-					}
-					state.QmfSignalHistory[22] = num6 + num;
-					state.QmfSignalHistory[23] = num6 - num;
-					int num9 = 0;
-					int num10 = 0;
-					for (int j = 0; j < 12; j++)
-					{
-						num10 += state.QmfSignalHistory[2 * j] * G722Codec.qmf_coeffs[j];
-						num9 += state.QmfSignalHistory[2 * j + 1] * G722Codec.qmf_coeffs[11 - j];
-					}
-					outputBuffer[result++] = (short)(num9 >> 11);
-					outputBuffer[result++] = (short)(num10 >> 11);
-				}
-			}
-			return result;
-		}
+            outlen = 0;
+            rhigh = 0;
+            for (j = 0; j < inputLength;)
+            {
+                if (state.Packed)
+                {
+                    // Unpack the code bits
+                    if (state.InBits < state.BitsPerSample)
+                    {
+                        state.InBuffer |= (uint)(inputG722Data[j++] << state.InBits);
+                        state.InBits += 8;
+                    }
+                    code = (int)state.InBuffer & ((1 << state.BitsPerSample) - 1);
+                    state.InBuffer >>= state.BitsPerSample;
+                    state.InBits -= state.BitsPerSample;
+                }
+                else
+                {
+                    code = inputG722Data[j++];
+                }
 
-		public int Encode(G722CodecState state, byte[] outputBuffer, short[] inputBuffer, int inputBufferCount)
-		{
-			int result = 0;
-			int num = 0;
-			int i = 0;
-			while (i < inputBufferCount)
-			{
-				int num2;
-				int j;
-				if (state.ItuTestMode)
-				{
-					num = (num2 = inputBuffer[i++] >> 1);
-				}
-				else if (state.EncodeFrom8000Hz)
-				{
-					num2 = inputBuffer[i++] >> 1;
-				}
-				else
-				{
-					for (j = 0; j < 22; j++)
-					{
-						state.QmfSignalHistory[j] = state.QmfSignalHistory[j + 2];
-					}
-					state.QmfSignalHistory[22] = (int)inputBuffer[i++];
-					state.QmfSignalHistory[23] = (int)inputBuffer[i++];
-					int num3 = 0;
-					int num4 = 0;
-					for (j = 0; j < 12; j++)
-					{
-						num4 += state.QmfSignalHistory[2 * j] * G722Codec.qmf_coeffs[j];
-						num3 += state.QmfSignalHistory[2 * j + 1] * G722Codec.qmf_coeffs[11 - j];
-					}
-					num2 = num3 + num4 >> 14;
-					num = num3 - num4 >> 14;
-				}
-				int num5 = (int)G722Codec.Saturate(num2 - state.Band[0].s);
-				int num6 = (num5 >= 0) ? num5 : (-(num5 + 1));
-				int num7;
-				for (j = 1; j < 30; j++)
-				{
-					num7 = G722Codec.q6[j] * state.Band[0].det >> 12;
-					if (num6 < num7)
-					{
-						break;
-					}
-				}
-				int num8 = (num5 < 0) ? G722Codec.iln[j] : G722Codec.ilp[j];
-				int num9 = num8 >> 2;
-				int num10 = G722Codec.qm4[num9];
-				int d = state.Band[0].det * num10 >> 15;
-				int num11 = G722Codec.rl42[num9];
-				num6 = state.Band[0].nb * 127 >> 7;
-				state.Band[0].nb = num6 + G722Codec.wl[num11];
-				if (state.Band[0].nb < 0)
-				{
-					state.Band[0].nb = 0;
-				}
-				else if (state.Band[0].nb > 18432)
-				{
-					state.Band[0].nb = 18432;
-				}
-				num7 = (state.Band[0].nb >> 6 & 31);
-				num10 = 8 - (state.Band[0].nb >> 11);
-				int num12 = (num10 < 0) ? (G722Codec.ilb[num7] << -num10) : (G722Codec.ilb[num7] >> num10);
-				state.Band[0].det = num12 << 2;
-				G722Codec.Block4(state, 0, d);
-				int num13;
-				if (state.EncodeFrom8000Hz)
-				{
-					num13 = (192 | num8) >> 8 - state.BitsPerSample;
-				}
-				else
-				{
-					int num14 = (int)G722Codec.Saturate(num - state.Band[1].s);
-					num6 = ((num14 >= 0) ? num14 : (-(num14 + 1)));
-					num7 = 564 * state.Band[1].det >> 12;
-					int num15 = (num6 >= num7) ? 2 : 1;
-					int num16 = (num14 < 0) ? G722Codec.ihn[num15] : G722Codec.ihp[num15];
-					num10 = G722Codec.qm2[num16];
-					int d2 = state.Band[1].det * num10 >> 15;
-					int num17 = G722Codec.rh2[num16];
-					num6 = state.Band[1].nb * 127 >> 7;
-					state.Band[1].nb = num6 + G722Codec.wh[num17];
-					if (state.Band[1].nb < 0)
-					{
-						state.Band[1].nb = 0;
-					}
-					else if (state.Band[1].nb > 22528)
-					{
-						state.Band[1].nb = 22528;
-					}
-					num7 = (state.Band[1].nb >> 6 & 31);
-					num10 = 10 - (state.Band[1].nb >> 11);
-					num12 = ((num10 < 0) ? (G722Codec.ilb[num7] << -num10) : (G722Codec.ilb[num7] >> num10));
-					state.Band[1].det = num12 << 2;
-					G722Codec.Block4(state, 1, d2);
-					num13 = (num16 << 6 | num8) >> 8 - state.BitsPerSample;
-				}
-				if (state.Packed)
-				{
-					state.OutBuffer |= (uint)((uint)num13 << state.OutBits);
-					state.OutBits += state.BitsPerSample;
-					if (state.OutBits >= 8)
-					{
-						outputBuffer[result++] = (byte)(state.OutBuffer & 255u);
-						state.OutBits -= 8;
-						state.OutBuffer >>= 8;
-					}
-				}
-				else
-				{
-					outputBuffer[result++] = (byte)num13;
-				}
-			}
-			return result;
-		}
+                switch (state.BitsPerSample)
+                {
+                    default:
+                    case 8:
+                        wd1 = code & 0x3F;
+                        ihigh = (code >> 6) & 0x03;
+                        wd2 = qm6[wd1];
+                        wd1 >>= 2;
+                        break;
+                    case 7:
+                        wd1 = code & 0x1F;
+                        ihigh = (code >> 5) & 0x03;
+                        wd2 = qm5[wd1];
+                        wd1 >>= 1;
+                        break;
+                    case 6:
+                        wd1 = code & 0x0F;
+                        ihigh = (code >> 4) & 0x03;
+                        wd2 = qm4[wd1];
+                        break;
+                }
 
-		static G722Codec()
-		{
-			// 注意: 此类型已标记为 'beforefieldinit'.
-			int[] expr_132 = new int[3];
-			expr_132[1] = 1;
-			G722Codec.ihn = expr_132;
-			G722Codec.ihp = new int[]
-			{
-				0,
-				3,
-				2
-			};
-		}
-	}
+                // Block 5L, LOW BAND INVQBL
+                wd2 = (state.Band[0].det * wd2) >> 15;
+
+                // Block 5L, RECONS
+                rlow = state.Band[0].s + wd2;
+
+                // Block 6L, LIMIT
+                if (rlow > 16383)
+                    rlow = 16383;
+                else if (rlow < -16384)
+                    rlow = -16384;
+
+                // Block 2L, INVQAL
+                wd2 = qm4[wd1];
+                dlowt = (state.Band[0].det * wd2) >> 15;
+
+                // Block 3L, LOGSCL
+                wd2 = rl42[wd1];
+                wd1 = (state.Band[0].nb * 127) >> 7;
+                wd1 += wl[wd2];
+                if (wd1 < 0)
+                    wd1 = 0;
+                else if (wd1 > 18432)
+                    wd1 = 18432;
+                state.Band[0].nb = wd1;
+
+                // Block 3L, SCALEL
+                wd1 = (state.Band[0].nb >> 6) & 31;
+                wd2 = 8 - (state.Band[0].nb >> 11);
+                wd3 = (wd2 < 0) ? (ilb[wd1] << -wd2) : (ilb[wd1] >> wd2);
+                state.Band[0].det = wd3 << 2;
+
+                Block4(state, 0, dlowt);
+
+                if (!state.EncodeFrom8000Hz)
+                {
+                    // Block 2H, INVQAH
+                    wd2 = qm2[ihigh];
+                    dhigh = (state.Band[1].det * wd2) >> 15;
+
+                    // Block 5H, RECONS
+                    rhigh = dhigh + state.Band[1].s;
+
+                    // Block 6H, LIMIT
+                    if (rhigh > 16383)
+                        rhigh = 16383;
+                    else if (rhigh < -16384)
+                        rhigh = -16384;
+
+                    // Block 2H, INVQAH
+                    wd2 = rh2[ihigh];
+                    wd1 = (state.Band[1].nb * 127) >> 7;
+                    wd1 += wh[wd2];
+                    if (wd1 < 0)
+                        wd1 = 0;
+                    else if (wd1 > 22528)
+                        wd1 = 22528;
+                    state.Band[1].nb = wd1;
+
+                    // Block 3H, SCALEH
+                    wd1 = (state.Band[1].nb >> 6) & 31;
+                    wd2 = 10 - (state.Band[1].nb >> 11);
+                    wd3 = (wd2 < 0) ? (ilb[wd1] << -wd2) : (ilb[wd1] >> wd2);
+                    state.Band[1].det = wd3 << 2;
+
+                    Block4(state, 1, dhigh);
+                }
+
+                if (state.ItuTestMode)
+                {
+                    outputBuffer[outlen++] = (short)(rlow << 1);
+                    outputBuffer[outlen++] = (short)(rhigh << 1);
+                }
+                else
+                {
+                    if (state.EncodeFrom8000Hz)
+                    {
+                        outputBuffer[outlen++] = (short)(rlow << 1);
+                    }
+                    else
+                    {
+                        // Apply the receive QMF
+                        for (i = 0; i < 22; i++)
+                            state.QmfSignalHistory[i] = state.QmfSignalHistory[i + 2];
+                        state.QmfSignalHistory[22] = rlow + rhigh;
+                        state.QmfSignalHistory[23] = rlow - rhigh;
+
+                        xout1 = 0;
+                        xout2 = 0;
+                        for (i = 0; i < 12; i++)
+                        {
+                            xout2 += state.QmfSignalHistory[2 * i] * qmf_coeffs[i];
+                            xout1 += state.QmfSignalHistory[2 * i + 1] * qmf_coeffs[11 - i];
+                        }
+                        outputBuffer[outlen++] = (short)(xout1 >> 11);
+                        outputBuffer[outlen++] = (short)(xout2 >> 11);
+                    }
+                }
+            }
+            return outlen;
+        }
+
+        /// <summary>
+        /// Encodes a buffer of G722
+        /// </summary>
+        /// <param name="state">Codec state</param>
+        /// <param name="outputBuffer">Output buffer (to contain encoded G722)</param>
+        /// <param name="inputBuffer">PCM 16 bit samples to encode</param>
+        /// <param name="inputBufferCount">Number of samples in the input buffer to encode</param>
+        /// <returns>Number of encoded bytes written into output buffer</returns>
+        public int Encode(G722CodecState state, byte[] outputBuffer, short[] inputBuffer, int inputBufferCount)
+        {
+            int dlow;
+            int dhigh;
+            int el;
+            int wd;
+            int wd1;
+            int ril;
+            int wd2;
+            int il4;
+            int ih2;
+            int wd3;
+            int eh;
+            int mih;
+            int i;
+            int j;
+            // Low and high band PCM from the QMF
+            int xlow;
+            int xhigh;
+            int g722_bytes;
+            // Even and odd tap accumulators
+            int sumeven;
+            int sumodd;
+            int ihigh;
+            int ilow;
+            int code;
+
+            g722_bytes = 0;
+            xhigh = 0;
+            for (j = 0; j < inputBufferCount;)
+            {
+                if (state.ItuTestMode)
+                {
+                    xlow =
+                    xhigh = inputBuffer[j++] >> 1;
+                }
+                else
+                {
+                    if (state.EncodeFrom8000Hz)
+                    {
+                        xlow = inputBuffer[j++] >> 1;
+                    }
+                    else
+                    {
+                        // Apply the transmit QMF
+                        // Shuffle the buffer down
+                        for (i = 0; i < 22; i++)
+                            state.QmfSignalHistory[i] = state.QmfSignalHistory[i + 2];
+                        state.QmfSignalHistory[22] = inputBuffer[j++];
+                        state.QmfSignalHistory[23] = inputBuffer[j++];
+
+                        // Discard every other QMF output
+                        sumeven = 0;
+                        sumodd = 0;
+                        for (i = 0; i < 12; i++)
+                        {
+                            sumodd += state.QmfSignalHistory[2 * i] * qmf_coeffs[i];
+                            sumeven += state.QmfSignalHistory[2 * i + 1] * qmf_coeffs[11 - i];
+                        }
+                        xlow = (sumeven + sumodd) >> 14;
+                        xhigh = (sumeven - sumodd) >> 14;
+                    }
+                }
+                // Block 1L, SUBTRA
+                el = Saturate(xlow - state.Band[0].s);
+
+                // Block 1L, QUANTL
+                wd = (el >= 0) ? el : -(el + 1);
+
+                for (i = 1; i < 30; i++)
+                {
+                    wd1 = (q6[i] * state.Band[0].det) >> 12;
+                    if (wd < wd1)
+                        break;
+                }
+                ilow = (el < 0) ? iln[i] : ilp[i];
+
+                // Block 2L, INVQAL
+                ril = ilow >> 2;
+                wd2 = qm4[ril];
+                dlow = (state.Band[0].det * wd2) >> 15;
+
+                // Block 3L, LOGSCL
+                il4 = rl42[ril];
+                wd = (state.Band[0].nb * 127) >> 7;
+                state.Band[0].nb = wd + wl[il4];
+                if (state.Band[0].nb < 0)
+                    state.Band[0].nb = 0;
+                else if (state.Band[0].nb > 18432)
+                    state.Band[0].nb = 18432;
+
+                // Block 3L, SCALEL
+                wd1 = (state.Band[0].nb >> 6) & 31;
+                wd2 = 8 - (state.Band[0].nb >> 11);
+                wd3 = (wd2 < 0) ? (ilb[wd1] << -wd2) : (ilb[wd1] >> wd2);
+                state.Band[0].det = wd3 << 2;
+
+                Block4(state, 0, dlow);
+
+                if (state.EncodeFrom8000Hz)
+                {
+                    // Just leave the high bits as zero
+                    code = (0xC0 | ilow) >> (8 - state.BitsPerSample);
+                }
+                else
+                {
+                    // Block 1H, SUBTRA
+                    eh = Saturate(xhigh - state.Band[1].s);
+
+                    // Block 1H, QUANTH
+                    wd = (eh >= 0) ? eh : -(eh + 1);
+                    wd1 = (564 * state.Band[1].det) >> 12;
+                    mih = (wd >= wd1) ? 2 : 1;
+                    ihigh = (eh < 0) ? ihn[mih] : ihp[mih];
+
+                    // Block 2H, INVQAH
+                    wd2 = qm2[ihigh];
+                    dhigh = (state.Band[1].det * wd2) >> 15;
+
+                    // Block 3H, LOGSCH
+                    ih2 = rh2[ihigh];
+                    wd = (state.Band[1].nb * 127) >> 7;
+                    state.Band[1].nb = wd + wh[ih2];
+                    if (state.Band[1].nb < 0)
+                        state.Band[1].nb = 0;
+                    else if (state.Band[1].nb > 22528)
+                        state.Band[1].nb = 22528;
+
+                    // Block 3H, SCALEH
+                    wd1 = (state.Band[1].nb >> 6) & 31;
+                    wd2 = 10 - (state.Band[1].nb >> 11);
+                    wd3 = (wd2 < 0) ? (ilb[wd1] << -wd2) : (ilb[wd1] >> wd2);
+                    state.Band[1].det = wd3 << 2;
+
+                    Block4(state, 1, dhigh);
+                    code = ((ihigh << 6) | ilow) >> (8 - state.BitsPerSample);
+                }
+
+                if (state.Packed)
+                {
+                    // Pack the code bits
+                    state.OutBuffer |= (uint)(code << state.OutBits);
+                    state.OutBits += state.BitsPerSample;
+                    if (state.OutBits >= 8)
+                    {
+                        outputBuffer[g722_bytes++] = (byte)(state.OutBuffer & 0xFF);
+                        state.OutBits -= 8;
+                        state.OutBuffer >>= 8;
+                    }
+                }
+                else
+                {
+                    outputBuffer[g722_bytes++] = (byte)code;
+                }
+            }
+            return g722_bytes;
+        }
+    }
 }

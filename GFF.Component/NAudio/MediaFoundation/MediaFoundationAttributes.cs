@@ -1,9 +1,9 @@
-using NAudio.Utils;
+using GFF.Component.NAudio.Utils;
 using System;
 
 namespace GFF.Component.NAudio.MediaFoundation
 {
-	public static class MediaFoundationAttributes
+    public static class MediaFoundationAttributes
 	{
 		public static readonly Guid MF_TRANSFORM_ASYNC = new Guid("f81a699a-649a-497d-8c73-29f8fed6ad7a");
 

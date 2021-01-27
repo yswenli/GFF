@@ -1,115 +1,134 @@
-using NAudio.CoreAudioApi.Interfaces;
+using GFF.Component.NAudio.CoreAudioApi.Interfaces;
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace GFF.Component.NAudio.CoreAudioApi
 {
-	public class AudioSessionManager
-	{
-		public delegate void SessionCreatedDelegate(object sender, IAudioSessionControl newSession);
+    /// <summary>
+    /// AudioSessionManager
+    /// 
+    /// Designed to manage audio sessions and in particuar the
+    /// SimpleAudioVolume interface to adjust a session volume
+    /// </summary>
+    public class AudioSessionManager
+    {
+        private readonly IAudioSessionManager audioSessionInterface;
+        private readonly IAudioSessionManager2 audioSessionInterface2;
+        private AudioSessionNotification audioSessionNotification;
+        private SessionCollection sessions;
 
-		private readonly IAudioSessionManager audioSessionInterface;
+        private SimpleAudioVolume simpleAudioVolume;
+        private AudioSessionControl audioSessionControl;
 
-		private readonly IAudioSessionManager2 audioSessionInterface2;
+        /// <summary>
+        /// Session created delegate
+        /// </summary>
+        public delegate void SessionCreatedDelegate(object sender, IAudioSessionControl newSession);
 
-		private AudioSessionNotification audioSessionNotification;
+        /// <summary>
+        /// Occurs when audio session has been added (for example run another program that use audio playback).
+        /// </summary>
+        public event SessionCreatedDelegate OnSessionCreated;
 
-		private SessionCollection sessions;
+        internal AudioSessionManager(IAudioSessionManager audioSessionManager)
+        {
+            audioSessionInterface = audioSessionManager;
+            audioSessionInterface2 = audioSessionManager as IAudioSessionManager2;
 
-		private SimpleAudioVolume simpleAudioVolume;
+            RefreshSessions();
+        }
 
-		private AudioSessionControl audioSessionControl;
+        /// <summary>
+        /// SimpleAudioVolume object
+        /// for adjusting the volume for the user session
+        /// </summary>
+        public SimpleAudioVolume SimpleAudioVolume
+        {
+            get
+            {
+                if (simpleAudioVolume == null)
+                {
+                    audioSessionInterface.GetSimpleAudioVolume(Guid.Empty, 0, out var simpleAudioInterface);
 
-		[method: CompilerGenerated]
-		[CompilerGenerated]
-		public event AudioSessionManager.SessionCreatedDelegate OnSessionCreated;
+                    simpleAudioVolume = new SimpleAudioVolume(simpleAudioInterface);
+                }
+                return simpleAudioVolume;
+            }
+        }
 
-		public SimpleAudioVolume SimpleAudioVolume
-		{
-			get
-			{
-				if (this.simpleAudioVolume == null)
-				{
-					ISimpleAudioVolume realSimpleVolume;
-					this.audioSessionInterface.GetSimpleAudioVolume(Guid.Empty, 0u, out realSimpleVolume);
-					this.simpleAudioVolume = new SimpleAudioVolume(realSimpleVolume);
-				}
-				return this.simpleAudioVolume;
-			}
-		}
+        /// <summary>
+        /// AudioSessionControl object
+        /// for registring for callbacks and other session information
+        /// </summary>
+        public AudioSessionControl AudioSessionControl
+        {
+            get
+            {
+                if (audioSessionControl == null)
+                {
+                    audioSessionInterface.GetAudioSessionControl(Guid.Empty, 0, out var audioSessionControlInterface);
 
-		public AudioSessionControl AudioSessionControl
-		{
-			get
-			{
-				if (this.audioSessionControl == null)
-				{
-					IAudioSessionControl audioSessionControl;
-					this.audioSessionInterface.GetAudioSessionControl(Guid.Empty, 0u, out audioSessionControl);
-					this.audioSessionControl = new AudioSessionControl(audioSessionControl);
-				}
-				return this.audioSessionControl;
-			}
-		}
+                    audioSessionControl = new AudioSessionControl(audioSessionControlInterface);
+                }
+                return audioSessionControl;
+            }
+        }
 
-		public SessionCollection Sessions
-		{
-			get
-			{
-				return this.sessions;
-			}
-		}
+        internal void FireSessionCreated(IAudioSessionControl newSession)
+        {
+            OnSessionCreated?.Invoke(this, newSession);
+        }
 
-		internal AudioSessionManager(IAudioSessionManager audioSessionManager)
-		{
-			this.audioSessionInterface = audioSessionManager;
-			this.audioSessionInterface2 = (audioSessionManager as IAudioSessionManager2);
-			this.RefreshSessions();
-		}
+        /// <summary>
+        /// Refresh session of current device.
+        /// </summary>
+        public void RefreshSessions()
+        {
+            UnregisterNotifications();
 
-		internal void FireSessionCreated(IAudioSessionControl newSession)
-		{
-			AudioSessionManager.SessionCreatedDelegate expr_06 = this.OnSessionCreated;
-			if (expr_06 == null)
-			{
-				return;
-			}
-			expr_06(this, newSession);
-		}
+            if (audioSessionInterface2 != null)
+            {
+                Marshal.ThrowExceptionForHR(audioSessionInterface2.GetSessionEnumerator(out var sessionEnum));
+                sessions = new SessionCollection(sessionEnum);
 
-		public void RefreshSessions()
-		{
-			this.UnregisterNotifications();
-			if (this.audioSessionInterface2 != null)
-			{
-				IAudioSessionEnumerator realEnumerator;
-				Marshal.ThrowExceptionForHR(this.audioSessionInterface2.GetSessionEnumerator(out realEnumerator));
-				this.sessions = new SessionCollection(realEnumerator);
-				this.audioSessionNotification = new AudioSessionNotification(this);
-				Marshal.ThrowExceptionForHR(this.audioSessionInterface2.RegisterSessionNotification(this.audioSessionNotification));
-			}
-		}
+                audioSessionNotification = new AudioSessionNotification(this);
+                Marshal.ThrowExceptionForHR(audioSessionInterface2.RegisterSessionNotification(audioSessionNotification));
+            }
+        }
 
-		public void Dispose()
-		{
-			this.UnregisterNotifications();
-			GC.SuppressFinalize(this);
-		}
+        /// <summary>
+        /// Returns list of sessions of current device.
+        /// </summary>
+        public SessionCollection Sessions => sessions;
 
-		private void UnregisterNotifications()
-		{
-			this.sessions = null;
-			if (this.audioSessionNotification != null && this.audioSessionInterface2 != null)
-			{
-				Marshal.ThrowExceptionForHR(this.audioSessionInterface2.UnregisterSessionNotification(this.audioSessionNotification));
-				this.audioSessionNotification = null;
-			}
-		}
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            UnregisterNotifications();
 
-		~AudioSessionManager()
-		{
-			this.Dispose();
-		}
-	}
+            GC.SuppressFinalize(this);
+        }
+
+        private void UnregisterNotifications()
+        {
+            sessions = null;
+
+            if (audioSessionNotification != null && audioSessionInterface2 != null)
+            {
+                Marshal.ThrowExceptionForHR(
+                    audioSessionInterface2.UnregisterSessionNotification(audioSessionNotification));
+                audioSessionNotification = null;
+            }
+        }
+
+        /// <summary>
+        /// Finalizer.
+        /// </summary>
+        ~AudioSessionManager()
+        {
+            Dispose();
+        }
+    }
 }

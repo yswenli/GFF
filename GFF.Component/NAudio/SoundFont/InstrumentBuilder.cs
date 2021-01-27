@@ -4,58 +4,51 @@ using System.Text;
 
 namespace GFF.Component.NAudio.SoundFont
 {
-	internal class InstrumentBuilder : StructureBuilder<Instrument>
-	{
-		private Instrument lastInstrument;
+    /// <summary>
+    /// Instrument Builder
+    /// </summary>
+    internal class InstrumentBuilder : StructureBuilder<Instrument>
+    {
+        private Instrument lastInstrument = null;
 
-		public override int Length
-		{
-			get
-			{
-				return 22;
-			}
-		}
+        public override Instrument Read(BinaryReader br)
+        {
+            Instrument i = new Instrument();
+            string s = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
+            if (s.IndexOf('\0') >= 0)
+            {
+                s = s.Substring(0, s.IndexOf('\0'));
+            }
+            i.Name = s;
+            i.startInstrumentZoneIndex = br.ReadUInt16();
+            if (lastInstrument != null)
+            {
+                lastInstrument.endInstrumentZoneIndex = (ushort)(i.startInstrumentZoneIndex - 1);
+            }
+            data.Add(i);
+            lastInstrument = i;
+            return i;
+        }
 
-		public Instrument[] Instruments
-		{
-			get
-			{
-				return this.data.ToArray();
-			}
-		}
+        public override void Write(BinaryWriter bw, Instrument instrument)
+        {
+        }
 
-		public override Instrument Read(BinaryReader br)
-		{
-			Instrument instrument = new Instrument();
-			string text = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
-			if (text.IndexOf('\0') >= 0)
-			{
-				text = text.Substring(0, text.IndexOf('\0'));
-			}
-			instrument.Name = text;
-			instrument.startInstrumentZoneIndex = br.ReadUInt16();
-			if (this.lastInstrument != null)
-			{
-				this.lastInstrument.endInstrumentZoneIndex = instrument.startInstrumentZoneIndex - 1;
-			}
-			this.data.Add(instrument);
-			this.lastInstrument = instrument;
-			return instrument;
-		}
+        public override int Length => 22;
 
-		public override void Write(BinaryWriter bw, Instrument instrument)
-		{
-		}
+        public void LoadZones(Zone[] zones)
+        {
+            // don't do the last preset, which is simply EOP
+            for (int instrument = 0; instrument < data.Count - 1; instrument++)
+            {
+                Instrument i = data[instrument];
+                i.Zones = new Zone[i.endInstrumentZoneIndex - i.startInstrumentZoneIndex + 1];
+                Array.Copy(zones, i.startInstrumentZoneIndex, i.Zones, 0, i.Zones.Length);
+            }
+            // we can get rid of the EOP record now
+            data.RemoveAt(data.Count - 1);
+        }
 
-		public void LoadZones(Zone[] zones)
-		{
-			for (int i = 0; i < this.data.Count - 1; i++)
-			{
-				Instrument instrument = this.data[i];
-				instrument.Zones = new Zone[(int)(instrument.endInstrumentZoneIndex - instrument.startInstrumentZoneIndex + 1)];
-				Array.Copy(zones, (int)instrument.startInstrumentZoneIndex, instrument.Zones, 0, instrument.Zones.Length);
-			}
-			this.data.RemoveAt(this.data.Count - 1);
-		}
-	}
+        public Instrument[] Instruments => data.ToArray();
+    }
 }
