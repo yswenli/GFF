@@ -18,6 +18,7 @@
  *****************************************************************************************************/
 
 using GFF.Component.Config;
+using GFF.Component.GAudio;
 using GFF.Helper;
 using SAEA.MessageSocket;
 using SAEA.MVC;
@@ -30,6 +31,8 @@ namespace GFFServer
         private static MessageServer messageServer;
 
         private static SAEAMvcApplication fileServer;
+
+        private static GAudioServer _gAudioServer;
 
         private static void Main(string[] args)
         {
@@ -48,7 +51,6 @@ namespace GFFServer
             ConsoleHelper.WriteLine("消息服务器启动完毕...", ConsoleColor.Green);
 
 
-
             ConsoleHelper.WriteLine("正在初始化文件服务器...", ConsoleColor.DarkYellow);
             var filePort = ServerConfig.Instance().FilePort;
             fileServer = new SAEAMvcApplication(port: filePort);
@@ -58,6 +60,16 @@ namespace GFFServer
             ConsoleHelper.WriteLine("正在启动文件服务器...", ConsoleColor.DarkYellow);
             fileServer.Start();
             ConsoleHelper.WriteLine("文件服务器初始化完毕，http://127.0.0.1:" + filePort + "/...", ConsoleColor.DarkYellow);
+
+
+
+            ConsoleHelper.WriteLine("正在初始化语音服务器...", ConsoleColor.DarkBlue);
+            _gAudioServer = new GAudioServer(filePort + 1);
+            ConsoleHelper.WriteLine("语音服务器初始化完毕...", ConsoleColor.DarkBlue);
+            ConsoleHelper.WriteLine("正在启动语音服务器...", ConsoleColor.DarkBlue);
+            _gAudioServer.Start();
+            ConsoleHelper.WriteLine("语音服务器初始化完毕", ConsoleColor.DarkBlue);
+
 
             ConsoleHelper.WriteLine("点击回车，结束服务");
             Console.ReadLine();

@@ -23,6 +23,7 @@ using CCWin.SkinControl;
 using GFF.Component.Capture;
 using GFF.Component.Config;
 using GFF.Component.Emotion;
+using GFF.Component.GAudio;
 using GFF.Helper;
 using GFF.Helper.Extention;
 using GFFClient.Properties;
@@ -240,9 +241,10 @@ namespace GFFClient
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
-            PushHelper.Stop();
+            PushHelper.Stop();            
             try
             {
+                _gAudioClient?.Dispose();
                 Environment.Exit(-1);
             }
             catch
@@ -685,5 +687,27 @@ namespace GFFClient
         }
 
         #endregion
+
+        #region 语音
+
+        GAudioClient _gAudioClient = null;
+
+        private void toolStripDropDownButton2_ButtonClick(object sender, EventArgs e)
+        {
+            if (_gAudioClient == null)
+            {
+                ClientConfig clientConfig = ClientConfig.Instance();
+                _gAudioClient = new GAudioClient(clientConfig.IP, clientConfig.Port + 2);
+                _gAudioClient.Start();
+            }
+            else
+            {
+                _gAudioClient.Dispose();
+                _gAudioClient = null;
+            }            
+        }
+        #endregion
+
+
     }
 }

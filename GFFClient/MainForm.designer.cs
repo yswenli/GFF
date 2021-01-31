@@ -79,11 +79,6 @@ namespace GFFClient
             this.消息管理器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skinToolStrip2 = new CCWin.SkinControl.SkinToolStrip();
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -170,7 +165,7 @@ namespace GFFClient
             this.chatListBox.Items.AddRange(new CCWin.SkinControl.ChatListItem[] {
             chatListItem1});
             this.chatListBox.ListSubItemMenu = null;
-            this.chatListBox.Location = new System.Drawing.Point(434, 86);
+            this.chatListBox.Location = new System.Drawing.Point(466, 86);
             this.chatListBox.Name = "chatListBox";
             this.chatListBox.SelectSubItem = null;
             this.chatListBox.Size = new System.Drawing.Size(144, 415);
@@ -239,7 +234,7 @@ namespace GFFClient
             this.lblChatName.ForeColorSuit = true;
             this.lblChatName.Location = new System.Drawing.Point(54, 6);
             this.lblChatName.Name = "lblChatName";
-            this.lblChatName.Size = new System.Drawing.Size(74, 25);
+            this.lblChatName.Size = new System.Drawing.Size(92, 31);
             this.lblChatName.TabIndex = 125;
             this.lblChatName.Text = "WALLE";
             // 
@@ -256,7 +251,7 @@ namespace GFFClient
             this.lblChatQm.ForeColorSuit = true;
             this.lblChatQm.Location = new System.Drawing.Point(71, 33);
             this.lblChatQm.Name = "lblChatQm";
-            this.lblChatQm.Size = new System.Drawing.Size(80, 17);
+            this.lblChatQm.Size = new System.Drawing.Size(99, 20);
             this.lblChatQm.TabIndex = 126;
             this.lblChatQm.Text = "我的个性签名";
             // 
@@ -274,7 +269,7 @@ namespace GFFClient
             this.chatBox_history.Name = "chatBox_history";
             this.chatBox_history.PopoutImageWhenDoubleClick = false;
             this.chatBox_history.ReadOnly = true;
-            this.chatBox_history.Size = new System.Drawing.Size(420, 267);
+            this.chatBox_history.Size = new System.Drawing.Size(452, 267);
             this.chatBox_history.TabIndex = 1;
             this.chatBox_history.Text = "";
             // 
@@ -291,7 +286,7 @@ namespace GFFClient
             this.chatBoxSend.Location = new System.Drawing.Point(6, 386);
             this.chatBoxSend.Name = "chatBoxSend";
             this.chatBoxSend.PopoutImageWhenDoubleClick = false;
-            this.chatBoxSend.Size = new System.Drawing.Size(423, 87);
+            this.chatBoxSend.Size = new System.Drawing.Size(455, 87);
             this.chatBoxSend.TabIndex = 0;
             this.chatBoxSend.Text = "";
             // 
@@ -330,6 +325,7 @@ namespace GFFClient
             this.skToolMenu.GripMargin = new System.Windows.Forms.Padding(2, 2, 4, 2);
             this.skToolMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.skToolMenu.HoverFore = System.Drawing.Color.White;
+            this.skToolMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.skToolMenu.ItemAnamorphosis = false;
             this.skToolMenu.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
             this.skToolMenu.ItemBorderShow = false;
@@ -353,7 +349,7 @@ namespace GFFClient
             this.skToolMenu.Name = "skToolMenu";
             this.skToolMenu.Padding = new System.Windows.Forms.Padding(0);
             this.skToolMenu.RadiusStyle = CCWin.SkinClass.RoundStyle.None;
-            this.skToolMenu.Size = new System.Drawing.Size(427, 31);
+            this.skToolMenu.Size = new System.Drawing.Size(459, 31);
             this.skToolMenu.SkinAllColor = true;
             this.skToolMenu.TabIndex = 132;
             this.skToolMenu.Text = "skinToolStrip1";
@@ -459,7 +455,7 @@ namespace GFFClient
             // 发送本地图片ToolStripMenuItem
             // 
             this.发送本地图片ToolStripMenuItem.Name = "发送本地图片ToolStripMenuItem";
-            this.发送本地图片ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.发送本地图片ToolStripMenuItem.Size = new System.Drawing.Size(221, 26);
             this.发送本地图片ToolStripMenuItem.Text = "发送本地图片";
             this.发送本地图片ToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
@@ -467,7 +463,7 @@ namespace GFFClient
             // 
             this.从QQ空间相册选图ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("从QQ空间相册选图ToolStripMenuItem.Image")));
             this.从QQ空间相册选图ToolStripMenuItem.Name = "从QQ空间相册选图ToolStripMenuItem";
-            this.从QQ空间相册选图ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.从QQ空间相册选图ToolStripMenuItem.Size = new System.Drawing.Size(221, 26);
             this.从QQ空间相册选图ToolStripMenuItem.Text = "从QQ空间相册选图";
             // 
             // toolStripButton7
@@ -506,37 +502,37 @@ namespace GFFClient
             // ToolItemPrint
             // 
             this.ToolItemPrint.Name = "ToolItemPrint";
-            this.ToolItemPrint.Size = new System.Drawing.Size(184, 22);
+            this.ToolItemPrint.Size = new System.Drawing.Size(227, 26);
             this.ToolItemPrint.Text = "屏幕截图";
             this.ToolItemPrint.Click += new System.EventHandler(this.toolPrintScreen_ButtonClick);
             // 
             // 录制视屏动画ToolStripMenuItem
             // 
             this.录制视屏动画ToolStripMenuItem.Name = "录制视屏动画ToolStripMenuItem";
-            this.录制视屏动画ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.录制视屏动画ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.录制视屏动画ToolStripMenuItem.Text = "录制视屏动画";
             // 
             // 捕捉视屏图像ToolStripMenuItem
             // 
             this.捕捉视屏图像ToolStripMenuItem.Name = "捕捉视屏图像ToolStripMenuItem";
-            this.捕捉视屏图像ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.捕捉视屏图像ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.捕捉视屏图像ToolStripMenuItem.Text = "捕捉视屏图像";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(181, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(224, 6);
             // 
             // 显示截图编辑工具栏ToolStripMenuItem
             // 
             this.显示截图编辑工具栏ToolStripMenuItem.Name = "显示截图编辑工具栏ToolStripMenuItem";
-            this.显示截图编辑工具栏ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.显示截图编辑工具栏ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.显示截图编辑工具栏ToolStripMenuItem.Text = "显示截图编辑工具栏";
             // 
             // 截图时隐藏当前窗口ToolStripMenuItem
             // 
             this.截图时隐藏当前窗口ToolStripMenuItem.Name = "截图时隐藏当前窗口ToolStripMenuItem";
-            this.截图时隐藏当前窗口ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.截图时隐藏当前窗口ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.截图时隐藏当前窗口ToolStripMenuItem.Text = "截图时隐藏当前窗口";
             // 
             // toolStripLabel1
@@ -575,7 +571,7 @@ namespace GFFClient
             // 显示消息记录ToolStripMenuItem
             // 
             this.显示消息记录ToolStripMenuItem.Name = "显示消息记录ToolStripMenuItem";
-            this.显示消息记录ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.显示消息记录ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.显示消息记录ToolStripMenuItem.Text = "显示消息记录";
             // 
             // 显示比例ToolStripMenuItem
@@ -592,83 +588,83 @@ namespace GFFClient
             this.toolStripMenuItem13,
             this.toolStripMenuItem14});
             this.显示比例ToolStripMenuItem.Name = "显示比例ToolStripMenuItem";
-            this.显示比例ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.显示比例ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.显示比例ToolStripMenuItem.Text = "显示比例";
             // 
             // 放大Ctrl滚轮ToolStripMenuItem
             // 
             this.放大Ctrl滚轮ToolStripMenuItem.Name = "放大Ctrl滚轮ToolStripMenuItem";
-            this.放大Ctrl滚轮ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.放大Ctrl滚轮ToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.放大Ctrl滚轮ToolStripMenuItem.Text = "放大 Ctrl+滚轮";
             // 
             // 缩小ToolStripMenuItem
             // 
             this.缩小ToolStripMenuItem.Name = "缩小ToolStripMenuItem";
-            this.缩小ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.缩小ToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
             this.缩小ToolStripMenuItem.Text = "缩小";
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(154, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(190, 6);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem8.Text = "400%";
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem9.Text = "200%";
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem10.Text = "150%";
             // 
             // toolStripMenuItem11
             // 
             this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem11.Text = "125%";
             // 
             // toolStripMenuItem12
             // 
             this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem12.Text = "100%";
             // 
             // toolStripMenuItem13
             // 
             this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem13.Text = "75%";
             // 
             // toolStripMenuItem14
             // 
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(193, 26);
             this.toolStripMenuItem14.Text = "50%";
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(145, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(179, 6);
             // 
             // 清屏ToolStripMenuItem
             // 
             this.清屏ToolStripMenuItem.Name = "清屏ToolStripMenuItem";
-            this.清屏ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.清屏ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.清屏ToolStripMenuItem.Text = "清屏";
             // 
             // 消息管理器ToolStripMenuItem
             // 
             this.消息管理器ToolStripMenuItem.Name = "消息管理器ToolStripMenuItem";
-            this.消息管理器ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.消息管理器ToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.消息管理器ToolStripMenuItem.Text = "消息管理器";
             // 
             // skinToolStrip2
@@ -703,6 +699,7 @@ namespace GFFClient
             this.skinToolStrip2.GripMargin = new System.Windows.Forms.Padding(2, 2, 4, 2);
             this.skinToolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.skinToolStrip2.HoverFore = System.Drawing.Color.White;
+            this.skinToolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.skinToolStrip2.ItemAnamorphosis = false;
             this.skinToolStrip2.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
             this.skinToolStrip2.ItemBorderShow = false;
@@ -721,7 +718,7 @@ namespace GFFClient
             this.skinToolStrip2.Location = new System.Drawing.Point(2, 52);
             this.skinToolStrip2.Name = "skinToolStrip2";
             this.skinToolStrip2.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skinToolStrip2.Size = new System.Drawing.Size(183, 32);
+            this.skinToolStrip2.Size = new System.Drawing.Size(365, 32);
             this.skinToolStrip2.SkinAllColor = true;
             this.skinToolStrip2.TabIndex = 133;
             this.skinToolStrip2.Text = "skinToolStrip2";
@@ -733,50 +730,15 @@ namespace GFFClient
             // toolStripDropDownButton2
             // 
             this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem15,
-            this.toolStripMenuItem16,
-            this.toolStripMenuItem17,
-            this.toolStripMenuItem18,
-            this.toolStripMenuItem19});
             this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
             this.toolStripDropDownButton2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton2.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
             this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(41, 29);
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(44, 29);
             this.toolStripDropDownButton2.Text = "toolStripButton8";
             this.toolStripDropDownButton2.ToolTipText = "开始视频通话";
-            // 
-            // toolStripMenuItem15
-            // 
-            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(148, 22);
-            this.toolStripMenuItem15.Text = "开始语音会话";
-            // 
-            // toolStripMenuItem16
-            // 
-            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(148, 22);
-            this.toolStripMenuItem16.Text = "发起多人语音";
-            // 
-            // toolStripMenuItem17
-            // 
-            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(148, 22);
-            this.toolStripMenuItem17.Text = "语音设置";
-            // 
-            // toolStripMenuItem18
-            // 
-            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
-            this.toolStripMenuItem18.Size = new System.Drawing.Size(148, 22);
-            this.toolStripMenuItem18.Text = "语音测试向导";
-            // 
-            // toolStripMenuItem19
-            // 
-            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
-            this.toolStripMenuItem19.Size = new System.Drawing.Size(148, 22);
-            this.toolStripMenuItem19.Text = "发送语音信息";
+            this.toolStripDropDownButton2.ButtonClick += new System.EventHandler(this.toolStripDropDownButton2_ButtonClick);
             // 
             // toolStripDropDownButton1
             // 
@@ -794,49 +756,49 @@ namespace GFFClient
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(41, 29);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(44, 29);
             this.toolStripDropDownButton1.Text = "toolStripButton8";
             this.toolStripDropDownButton1.ToolTipText = "开始语音通话";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(184, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(227, 26);
             this.toolStripMenuItem2.Text = "开始视频会话";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(184, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(227, 26);
             this.toolStripMenuItem3.Text = "邀请多人视频会话";
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(184, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(227, 26);
             this.toolStripMenuItem4.Text = "发送视频留言";
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(181, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(224, 6);
             // 
             // 给对方播放影音文件ToolStripMenuItem
             // 
             this.给对方播放影音文件ToolStripMenuItem.Name = "给对方播放影音文件ToolStripMenuItem";
-            this.给对方播放影音文件ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.给对方播放影音文件ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.给对方播放影音文件ToolStripMenuItem.Text = "给对方播放影音文件";
             // 
             // 视频设置ToolStripMenuItem
             // 
             this.视频设置ToolStripMenuItem.Name = "视频设置ToolStripMenuItem";
-            this.视频设置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.视频设置ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.视频设置ToolStripMenuItem.Text = "视频设置";
             // 
             // 语音测试向导ToolStripMenuItem
             // 
             this.语音测试向导ToolStripMenuItem.Name = "语音测试向导ToolStripMenuItem";
-            this.语音测试向导ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.语音测试向导ToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.语音测试向导ToolStripMenuItem.Text = "语音测试向导";
             // 
             // ToolFile
@@ -847,7 +809,7 @@ namespace GFFClient
             this.ToolFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolFile.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
             this.ToolFile.Name = "ToolFile";
-            this.ToolFile.Size = new System.Drawing.Size(38, 29);
+            this.ToolFile.Size = new System.Drawing.Size(39, 29);
             this.ToolFile.Text = "toolStripButton8";
             this.ToolFile.ToolTipText = "传送文件";
             this.ToolFile.Click += new System.EventHandler(this.ToolFile_Click);
@@ -878,7 +840,7 @@ namespace GFFClient
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(41, 29);
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(44, 29);
             this.toolStripSplitButton1.Text = "toolStripButton8";
             this.toolStripSplitButton1.ToolTipText = "远程桌面";
             this.toolStripSplitButton1.Visible = false;
@@ -886,25 +848,25 @@ namespace GFFClient
             // toolStripMenuItem20
             // 
             this.toolStripMenuItem20.Name = "toolStripMenuItem20";
-            this.toolStripMenuItem20.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem20.Text = "发送文件";
             // 
             // toolStripMenuItem21
             // 
             this.toolStripMenuItem21.Name = "toolStripMenuItem21";
-            this.toolStripMenuItem21.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem21.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem21.Text = "发送文件夹";
             // 
             // toolStripMenuItem22
             // 
             this.toolStripMenuItem22.Name = "toolStripMenuItem22";
-            this.toolStripMenuItem22.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem22.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem22.Text = "发送离线文件";
             // 
             // toolStripMenuItem23
             // 
             this.toolStripMenuItem23.Name = "toolStripMenuItem23";
-            this.toolStripMenuItem23.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem23.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem23.Text = "传文件设置";
             // 
             // toolStripButton5
@@ -942,7 +904,7 @@ namespace GFFClient
             this.toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton3.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
             this.toolStripDropDownButton3.Name = "toolStripDropDownButton3";
-            this.toolStripDropDownButton3.Size = new System.Drawing.Size(38, 29);
+            this.toolStripDropDownButton3.Size = new System.Drawing.Size(39, 29);
             this.toolStripDropDownButton3.Text = "toolStripButton8";
             this.toolStripDropDownButton3.ToolTipText = "应用";
             this.toolStripDropDownButton3.Visible = false;
@@ -950,36 +912,36 @@ namespace GFFClient
             // toolStripMenuItem27
             // 
             this.toolStripMenuItem27.Name = "toolStripMenuItem27";
-            this.toolStripMenuItem27.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem27.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem27.Text = "发送短信";
             // 
             // toolStripMenuItem28
             // 
             this.toolStripMenuItem28.Name = "toolStripMenuItem28";
-            this.toolStripMenuItem28.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem28.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem28.Text = "发送邮件";
             // 
             // toolStripMenuItem29
             // 
             this.toolStripMenuItem29.Name = "toolStripMenuItem29";
-            this.toolStripMenuItem29.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem29.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem29.Text = "手机免费聊QQ";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(188, 6);
             // 
             // toolStripMenuItem30
             // 
             this.toolStripMenuItem30.Name = "toolStripMenuItem30";
-            this.toolStripMenuItem30.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem30.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem30.Text = "搜索";
             // 
             // toolStripMenuItem31
             // 
             this.toolStripMenuItem31.Name = "toolStripMenuItem31";
-            this.toolStripMenuItem31.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem31.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem31.Text = "腾讯视频";
             // 
             // toolStripMenuItem35
@@ -990,30 +952,30 @@ namespace GFFClient
             this.toolStripSeparator2,
             this.toolStripMenuItem39});
             this.toolStripMenuItem35.Name = "toolStripMenuItem35";
-            this.toolStripMenuItem35.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem35.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem35.Text = "财付通";
             // 
             // toolStripMenuItem37
             // 
             this.toolStripMenuItem37.Name = "toolStripMenuItem37";
-            this.toolStripMenuItem37.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem37.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem37.Text = "我要付款";
             // 
             // toolStripMenuItem38
             // 
             this.toolStripMenuItem38.Name = "toolStripMenuItem38";
-            this.toolStripMenuItem38.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem38.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem38.Text = "查询交易记录";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(179, 6);
             // 
             // toolStripMenuItem39
             // 
             this.toolStripMenuItem39.Name = "toolStripMenuItem39";
-            this.toolStripMenuItem39.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem39.Size = new System.Drawing.Size(182, 26);
             this.toolStripMenuItem39.Text = "交易发布";
             // 
             // toolStripMenuItem40
@@ -1025,66 +987,66 @@ namespace GFFClient
             this.toolStripMenuItem44,
             this.toolStripMenuItem45});
             this.toolStripMenuItem40.Name = "toolStripMenuItem40";
-            this.toolStripMenuItem40.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem40.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem40.Text = "QQ风尚";
             // 
             // toolStripMenuItem41
             // 
             this.toolStripMenuItem41.Name = "toolStripMenuItem41";
-            this.toolStripMenuItem41.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem41.Size = new System.Drawing.Size(152, 26);
             this.toolStripMenuItem41.Text = "QQ头像";
             // 
             // toolStripMenuItem42
             // 
             this.toolStripMenuItem42.Name = "toolStripMenuItem42";
-            this.toolStripMenuItem42.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem42.Size = new System.Drawing.Size(152, 26);
             this.toolStripMenuItem42.Text = "QQ皮肤";
             // 
             // toolStripMenuItem43
             // 
             this.toolStripMenuItem43.Name = "toolStripMenuItem43";
-            this.toolStripMenuItem43.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem43.Size = new System.Drawing.Size(152, 26);
             this.toolStripMenuItem43.Text = "QQ表情";
             // 
             // toolStripMenuItem44
             // 
             this.toolStripMenuItem44.Name = "toolStripMenuItem44";
-            this.toolStripMenuItem44.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem44.Size = new System.Drawing.Size(152, 26);
             this.toolStripMenuItem44.Text = "会员炫铃";
             // 
             // toolStripMenuItem45
             // 
             this.toolStripMenuItem45.Name = "toolStripMenuItem45";
-            this.toolStripMenuItem45.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem45.Size = new System.Drawing.Size(152, 26);
             this.toolStripMenuItem45.Text = "下载壁纸";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(153, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(188, 6);
             // 
             // toolStripMenuItem46
             // 
             this.toolStripMenuItem46.Name = "toolStripMenuItem46";
-            this.toolStripMenuItem46.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem46.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem46.Text = "给他推荐好友";
             // 
             // toolStripMenuItem47
             // 
             this.toolStripMenuItem47.Name = "toolStripMenuItem47";
-            this.toolStripMenuItem47.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem47.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem47.Text = "删除好友";
             // 
             // toolStripMenuItem48
             // 
             this.toolStripMenuItem48.Name = "toolStripMenuItem48";
-            this.toolStripMenuItem48.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem48.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem48.Text = "移至黑名单";
             // 
             // toolStripMenuItem49
             // 
             this.toolStripMenuItem49.Name = "toolStripMenuItem49";
-            this.toolStripMenuItem49.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem49.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem49.Text = "举报";
             // 
             // btnSendMenu
@@ -1095,7 +1057,7 @@ namespace GFFClient
             this.btnSendMenu.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btnSendMenu.DownBack = ((System.Drawing.Image)(resources.GetObject("btnSendMenu.DownBack")));
             this.btnSendMenu.DrawType = CCWin.SkinControl.DrawStyle.Img;
-            this.btnSendMenu.Location = new System.Drawing.Point(391, 479);
+            this.btnSendMenu.Location = new System.Drawing.Point(423, 479);
             this.btnSendMenu.Margin = new System.Windows.Forms.Padding(0);
             this.btnSendMenu.MouseBack = ((System.Drawing.Image)(resources.GetObject("btnSendMenu.MouseBack")));
             this.btnSendMenu.Name = "btnSendMenu";
@@ -1117,7 +1079,7 @@ namespace GFFClient
             this.btnSend.DownBack = ((System.Drawing.Image)(resources.GetObject("btnSend.DownBack")));
             this.btnSend.DrawType = CCWin.SkinControl.DrawStyle.Img;
             this.btnSend.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSend.Location = new System.Drawing.Point(330, 479);
+            this.btnSend.Location = new System.Drawing.Point(362, 479);
             this.btnSend.Margin = new System.Windows.Forms.Padding(0);
             this.btnSend.MouseBack = ((System.Drawing.Image)(resources.GetObject("btnSend.MouseBack")));
             this.btnSend.Name = "btnSend";
@@ -1140,7 +1102,7 @@ namespace GFFClient
             this.btnClose.DownBack = ((System.Drawing.Image)(resources.GetObject("btnClose.DownBack")));
             this.btnClose.DrawType = CCWin.SkinControl.DrawStyle.Img;
             this.btnClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClose.Location = new System.Drawing.Point(258, 479);
+            this.btnClose.Location = new System.Drawing.Point(290, 479);
             this.btnClose.MouseBack = ((System.Drawing.Image)(resources.GetObject("btnClose.MouseBack")));
             this.btnClose.Name = "btnClose";
             this.btnClose.NormlBack = ((System.Drawing.Image)(resources.GetObject("btnClose.NormlBack")));
@@ -1162,6 +1124,7 @@ namespace GFFClient
             this.SendMenu.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
             this.SendMenu.Fore = System.Drawing.Color.Black;
             this.SendMenu.HoverFore = System.Drawing.Color.White;
+            this.SendMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.SendMenu.ItemAnamorphosis = false;
             this.SendMenu.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(136)))), ((int)(((byte)(200)))));
             this.SendMenu.ItemBorderShow = false;
@@ -1175,7 +1138,7 @@ namespace GFFClient
             this.SendMenu.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
             this.SendMenu.Name = "MenuState";
             this.SendMenu.RadiusStyle = CCWin.SkinClass.RoundStyle.None;
-            this.SendMenu.Size = new System.Drawing.Size(208, 48);
+            this.SendMenu.Size = new System.Drawing.Size(244, 56);
             this.SendMenu.SkinAllColor = true;
             this.SendMenu.TitleAnamorphosis = false;
             this.SendMenu.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(233)))), ((int)(((byte)(236)))));
@@ -1189,13 +1152,13 @@ namespace GFFClient
             this.toolStripMenuItem36.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripMenuItem36.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripMenuItem36.Name = "toolStripMenuItem36";
-            this.toolStripMenuItem36.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItem36.Size = new System.Drawing.Size(243, 26);
             this.toolStripMenuItem36.Text = "按Enter键发送消息";
             // 
             // 按CtrlEnter键发送消息ToolStripMenuItem
             // 
             this.按CtrlEnter键发送消息ToolStripMenuItem.Name = "按CtrlEnter键发送消息ToolStripMenuItem";
-            this.按CtrlEnter键发送消息ToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.按CtrlEnter键发送消息ToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
             this.按CtrlEnter键发送消息ToolStripMenuItem.Text = "按Ctrl+Enter键发送消息";
             // 
             // fontDialog
@@ -1233,7 +1196,7 @@ namespace GFFClient
             this.SysMenu.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
             this.SysMenu.Name = "MenuState";
             this.SysMenu.RadiusStyle = CCWin.SkinClass.RoundStyle.None;
-            this.SysMenu.Size = new System.Drawing.Size(161, 170);
+            this.SysMenu.Size = new System.Drawing.Size(184, 198);
             this.SysMenu.SkinAllColor = true;
             this.SysMenu.TitleAnamorphosis = false;
             this.SysMenu.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(233)))), ((int)(((byte)(236)))));
@@ -1243,7 +1206,7 @@ namespace GFFClient
             // toolQQShow
             // 
             this.toolQQShow.Name = "toolQQShow";
-            this.toolQQShow.Size = new System.Drawing.Size(160, 22);
+            this.toolQQShow.Size = new System.Drawing.Size(183, 26);
             this.toolQQShow.Text = "保持窗口最前";
             // 
             // toolStripMenuItem50
@@ -1251,18 +1214,18 @@ namespace GFFClient
             this.toolStripMenuItem50.Checked = true;
             this.toolStripMenuItem50.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripMenuItem50.Name = "toolStripMenuItem50";
-            this.toolStripMenuItem50.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem50.Size = new System.Drawing.Size(183, 26);
             this.toolStripMenuItem50.Text = "合并会话窗口";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(157, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(180, 6);
             // 
             // toolStripMenuItem33
             // 
             this.toolStripMenuItem33.Name = "toolStripMenuItem33";
-            this.toolStripMenuItem33.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem33.Size = new System.Drawing.Size(183, 26);
             this.toolStripMenuItem33.Text = "显示自己的皮肤";
             // 
             // toolStripMenuItem26
@@ -1270,30 +1233,30 @@ namespace GFFClient
             this.toolStripMenuItem26.Checked = true;
             this.toolStripMenuItem26.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripMenuItem26.Name = "toolStripMenuItem26";
-            this.toolStripMenuItem26.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem26.Size = new System.Drawing.Size(183, 26);
             this.toolStripMenuItem26.Text = "启用场景秀模式";
             // 
             // toolExit
             // 
             this.toolExit.Name = "toolExit";
-            this.toolExit.Size = new System.Drawing.Size(160, 22);
+            this.toolExit.Size = new System.Drawing.Size(183, 26);
             this.toolExit.Text = "场景秀设置";
             // 
             // 气泡设置ToolStripMenuItem
             // 
             this.气泡设置ToolStripMenuItem.Name = "气泡设置ToolStripMenuItem";
-            this.气泡设置ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.气泡设置ToolStripMenuItem.Size = new System.Drawing.Size(183, 26);
             this.气泡设置ToolStripMenuItem.Text = "气泡设置";
             // 
             // toolStripMenuItem51
             // 
             this.toolStripMenuItem51.Name = "toolStripMenuItem51";
-            this.toolStripMenuItem51.Size = new System.Drawing.Size(157, 6);
+            this.toolStripMenuItem51.Size = new System.Drawing.Size(180, 6);
             // 
             // 更多设置ToolStripMenuItem
             // 
             this.更多设置ToolStripMenuItem.Name = "更多设置ToolStripMenuItem";
-            this.更多设置ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.更多设置ToolStripMenuItem.Size = new System.Drawing.Size(183, 26);
             this.更多设置ToolStripMenuItem.Text = "更多设置";
             // 
             // skinLabel1
@@ -1306,9 +1269,9 @@ namespace GFFClient
             this.skinLabel1.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.skinLabel1.ForeColor = System.Drawing.Color.Firebrick;
             this.skinLabel1.ForeColorSuit = true;
-            this.skinLabel1.Location = new System.Drawing.Point(467, 66);
+            this.skinLabel1.Location = new System.Drawing.Point(499, 66);
             this.skinLabel1.Name = "skinLabel1";
-            this.skinLabel1.Size = new System.Drawing.Size(0, 17);
+            this.skinLabel1.Size = new System.Drawing.Size(0, 20);
             this.skinLabel1.TabIndex = 137;
             // 
             // openFileDialog1
@@ -1324,7 +1287,7 @@ namespace GFFClient
             this.loadingTxt.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.loadingTxt.Location = new System.Drawing.Point(27, 422);
             this.loadingTxt.Name = "loadingTxt";
-            this.loadingTxt.Size = new System.Drawing.Size(378, 17);
+            this.loadingTxt.Size = new System.Drawing.Size(410, 17);
             this.loadingTxt.TabIndex = 139;
             this.loadingTxt.Text = "正在处理中...";
             this.loadingTxt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1333,11 +1296,11 @@ namespace GFFClient
             // MainForm
             // 
             this.AcceptButton = this.btnSend;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Back = global::GFFClient.Properties.Resources.main_1;
             this.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(183)))), ((int)(((byte)(183)))), ((int)(((byte)(183)))));
-            this.ClientSize = new System.Drawing.Size(585, 508);
+            this.ClientSize = new System.Drawing.Size(617, 508);
             this.CloseBoxSize = new System.Drawing.Size(30, 27);
             this.CloseDownBack = global::GFFClient.Properties.Resources.sysbtn_close_down;
             this.CloseMouseBack = global::GFFClient.Properties.Resources.sysbtn_close_hover;
@@ -1381,9 +1344,9 @@ namespace GFFClient
             this.ShadowWidth = 6;
             this.ShowDrawIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            cmSysButton1.Bounds = new System.Drawing.Rectangle(465, 0, 30, 27);
+            cmSysButton1.Bounds = new System.Drawing.Rectangle(497, 0, 30, 27);
             cmSysButton1.BoxState = CCWin.ControlBoxState.Normal;
-            cmSysButton1.Location = new System.Drawing.Point(465, 0);
+            cmSysButton1.Location = new System.Drawing.Point(497, 0);
             cmSysButton1.Name = "SysSet";
             cmSysButton1.OwnerForm = this;
             cmSysButton1.Size = new System.Drawing.Size(30, 27);
@@ -1464,11 +1427,6 @@ namespace GFFClient
         private System.Windows.Forms.ToolStripMenuItem 视频设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 语音测试向导ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSplitButton toolStripDropDownButton2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem16;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem17;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem18;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem19;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton3;
