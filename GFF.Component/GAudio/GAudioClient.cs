@@ -1,11 +1,6 @@
 ﻿using GFF.Component.GAudio.Net;
 using GFF.Component.NAudio.Wave;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GFF.Component.GAudio
 {
@@ -13,10 +8,10 @@ namespace GFF.Component.GAudio
     {
         AudioClient _audioClient;
 
-        private readonly IWavePlayer waveOut;
+        private readonly IWavePlayer _waveOut;
         private readonly BufferedWaveProvider waveProvider;
         private readonly WideBandSpeexCodec _speexCodec;
-        private readonly WaveIn waveIn;
+        private readonly WaveIn _waveIn;
 
         public GAudioClient(IPEndPoint endPoint)
         {
@@ -25,16 +20,16 @@ namespace GFF.Component.GAudio
 
             _speexCodec = new WideBandSpeexCodec();
 
-            waveOut = new WaveOut();
+            _waveOut = new WaveOut();
             waveProvider = new BufferedWaveProvider(_speexCodec.RecordFormat);
-            waveOut.Init(waveProvider);
+            _waveOut.Init(waveProvider);
 
 
-            waveIn = new WaveIn();
-            waveIn.BufferMilliseconds = 50;
-            waveIn.DeviceNumber = 0;
-            waveIn.WaveFormat = _speexCodec.RecordFormat;
-            waveIn.DataAvailable += OnAudioCaptured;
+            _waveIn = new WaveIn();
+            _waveIn.BufferMilliseconds = 50;
+            _waveIn.DeviceNumber = 0;
+            _waveIn.WaveFormat = _speexCodec.RecordFormat;
+            _waveIn.DataAvailable += OnAudioCaptured;
         }
 
         public GAudioClient(string ip, int port) : this(new IPEndPoint(IPAddress.Parse(ip), port))
@@ -46,9 +41,9 @@ namespace GFF.Component.GAudio
         {
             _audioClient.Connect();
 
-            waveOut.Play();
+            _waveOut.Play();
 
-            waveIn.StartRecording();
+            _waveIn.StartRecording();
         }
 
         private void _audioClient_OnReceive(byte[] data)
@@ -66,16 +61,16 @@ namespace GFF.Component.GAudio
 
         public void Stop()
         {
-            waveIn.StopRecording();
-            waveOut.Pause();
+            _waveIn.StopRecording();
+            _waveOut.Pause();
             _audioClient.Disconnect();
         }
 
         public void Dispose()
         {
             Stop();
-            waveIn.Dispose();
-            waveOut.Dispose();            
+            _waveIn.Dispose();
+            _waveOut.Dispose();            
         }
     }
 }
