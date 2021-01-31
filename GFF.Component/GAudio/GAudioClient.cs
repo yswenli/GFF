@@ -9,7 +9,7 @@ namespace GFF.Component.GAudio
         AudioClient _audioClient;
 
         private readonly IWavePlayer _waveOut;
-        private readonly BufferedWaveProvider waveProvider;
+        private readonly BufferedWaveProvider _waveProvider;
         private readonly WideBandSpeexCodec _speexCodec;
         private readonly WaveIn _waveIn;
 
@@ -19,11 +19,11 @@ namespace GFF.Component.GAudio
             _audioClient.OnReceive += _audioClient_OnReceive;
 
             _speexCodec = new WideBandSpeexCodec();
+            
+            _waveProvider = new BufferedWaveProvider(_speexCodec.RecordFormat);
 
             _waveOut = new WaveOut();
-            waveProvider = new BufferedWaveProvider(_speexCodec.RecordFormat);
-            _waveOut.Init(waveProvider);
-
+            _waveOut.Init(_waveProvider);
 
             _waveIn = new WaveIn();
             _waveIn.BufferMilliseconds = 50;
@@ -49,7 +49,7 @@ namespace GFF.Component.GAudio
         private void _audioClient_OnReceive(byte[] data)
         {
             byte[] decoded = _speexCodec.Decode(data, 0, data.Length);
-            waveProvider.AddSamples(decoded, 0, decoded.Length);
+            _waveProvider.AddSamples(decoded, 0, decoded.Length);
         }
 
         void OnAudioCaptured(object sender, WaveInEventArgs e)
