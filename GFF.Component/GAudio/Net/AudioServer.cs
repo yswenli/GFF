@@ -43,13 +43,16 @@ namespace GFF.Component.GAudio.Net
 
         private void _udpServer_OnReceive(ISession currentSession, byte[] data)
         {
+            var userToken = (IUserToken)currentSession;
+
             Parallel.ForEach(_cache.Keys, (id) =>
             {
                 try
                 {
-                    _udpServer.SendAsync(id, data);
+                    if (id != userToken.ID)
+                        _udpServer.SendAsync(id, data);
                 }
-                catch { }                
+                catch { }
             });
         }
 
