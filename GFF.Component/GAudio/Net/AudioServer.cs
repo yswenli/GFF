@@ -49,7 +49,7 @@ namespace GFF.Component.GAudio.Net
             {
                 try
                 {
-                    if (id != userToken.ID)
+                    //if (id != userToken.ID)
                         _udpServer.SendAsync(id, data);
                 }
                 catch { }
