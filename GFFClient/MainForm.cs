@@ -27,6 +27,7 @@ using GFF.Component.GAudio;
 using GFF.Helper;
 using GFF.Helper.Extention;
 using GFFClient.Properties;
+using SAEA.Audio;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -244,7 +245,7 @@ namespace GFFClient
             PushHelper.Stop();            
             try
             {
-                _gAudioClient?.Dispose();
+                _audioClient?.Dispose();
                 Environment.Exit(-1);
             }
             catch
@@ -690,20 +691,20 @@ namespace GFFClient
 
         #region 语音
 
-        GAudioClient _gAudioClient = null;
+        AudioClient _audioClient = null;
 
         private void toolStripDropDownButton2_ButtonClick(object sender, EventArgs e)
         {
-            if (_gAudioClient == null)
+            if (_audioClient == null)
             {
                 ClientConfig clientConfig = ClientConfig.Instance();
-                _gAudioClient = new GAudioClient(clientConfig.IP, clientConfig.Port + 2);
-                _gAudioClient.Start();
+                _audioClient = new AudioClient(clientConfig.IP, clientConfig.Port + 2);
+                _audioClient.Start();
             }
             else
             {
-                _gAudioClient.Dispose();
-                _gAudioClient = null;
+                _audioClient.Dispose();
+                _audioClient = null;
             }            
         }
         #endregion

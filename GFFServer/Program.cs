@@ -16,10 +16,10 @@
  * 创建人：Wenli
  * 创建说明：
  *****************************************************************************************************/
-
 using GFF.Component.Config;
-using GFF.Component.GAudio;
 using GFF.Helper;
+using SAEA.Audio;
+using SAEA.Audio.Storage;
 using SAEA.MessageSocket;
 using SAEA.MVC;
 using System;
@@ -32,7 +32,7 @@ namespace GFFServer
 
         private static SAEAMvcApplication fileServer;
 
-        private static GAudioServer _gAudioServer;
+        private static AudioServer<VStorage> _audioServer;
 
         private static void Main(string[] args)
         {
@@ -64,10 +64,10 @@ namespace GFFServer
 
 
             ConsoleHelper.WriteLine("正在初始化语音服务器...", ConsoleColor.DarkBlue);
-            _gAudioServer = new GAudioServer(filePort + 1);
+            _audioServer = new AudioServer<VStorage>(filePort + 1);
             ConsoleHelper.WriteLine("语音服务器初始化完毕...", ConsoleColor.DarkBlue);
             ConsoleHelper.WriteLine("正在启动语音服务器...", ConsoleColor.DarkBlue);
-            _gAudioServer.Start();
+            _audioServer.Start();
             ConsoleHelper.WriteLine("语音服务器初始化完毕", ConsoleColor.DarkBlue);
 
 
