@@ -23,7 +23,6 @@ using CCWin.SkinControl;
 using GFF.Component.Capture;
 using GFF.Component.Config;
 using GFF.Component.Emotion;
-using GFF.Component.GAudio;
 using GFF.Helper;
 using GFF.Helper.Extention;
 using GFFClient.Properties;
@@ -700,9 +699,11 @@ namespace GFFClient
                 ClientConfig clientConfig = ClientConfig.Instance();
                 _audioClient = new AudioClient(clientConfig.IP, clientConfig.Port + 2);
                 _audioClient.Start();
+                _audioClient.Join("audiochat");
             }
             else
             {
+                _audioClient.Quit();
                 _audioClient.Dispose();
                 _audioClient = null;
             }            

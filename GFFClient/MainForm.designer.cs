@@ -282,7 +282,6 @@ namespace GFFClient
             this.chatBoxSend.ContextMenuMode = GFF.Component.ChatBox.ChatBoxContextMenuMode.None;
             this.chatBoxSend.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.chatBoxSend.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.chatBoxSend.ImeMode = System.Windows.Forms.ImeMode.On;
             this.chatBoxSend.Location = new System.Drawing.Point(6, 393);
             this.chatBoxSend.Name = "chatBoxSend";
             this.chatBoxSend.PopoutImageWhenDoubleClick = false;
@@ -912,36 +911,36 @@ namespace GFFClient
             // toolStripMenuItem27
             // 
             this.toolStripMenuItem27.Name = "toolStripMenuItem27";
-            this.toolStripMenuItem27.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem27.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem27.Text = "发送短信";
             // 
             // toolStripMenuItem28
             // 
             this.toolStripMenuItem28.Name = "toolStripMenuItem28";
-            this.toolStripMenuItem28.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem28.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem28.Text = "发送邮件";
             // 
             // toolStripMenuItem29
             // 
             this.toolStripMenuItem29.Name = "toolStripMenuItem29";
-            this.toolStripMenuItem29.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem29.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem29.Text = "手机免费聊QQ";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(188, 6);
             // 
             // toolStripMenuItem30
             // 
             this.toolStripMenuItem30.Name = "toolStripMenuItem30";
-            this.toolStripMenuItem30.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem30.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem30.Text = "搜索";
             // 
             // toolStripMenuItem31
             // 
             this.toolStripMenuItem31.Name = "toolStripMenuItem31";
-            this.toolStripMenuItem31.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem31.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem31.Text = "腾讯视频";
             // 
             // toolStripMenuItem35
@@ -952,7 +951,7 @@ namespace GFFClient
             this.toolStripSeparator2,
             this.toolStripMenuItem39});
             this.toolStripMenuItem35.Name = "toolStripMenuItem35";
-            this.toolStripMenuItem35.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem35.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem35.Text = "财付通";
             // 
             // toolStripMenuItem37
@@ -987,7 +986,7 @@ namespace GFFClient
             this.toolStripMenuItem44,
             this.toolStripMenuItem45});
             this.toolStripMenuItem40.Name = "toolStripMenuItem40";
-            this.toolStripMenuItem40.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem40.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem40.Text = "QQ风尚";
             // 
             // toolStripMenuItem41
@@ -1023,30 +1022,30 @@ namespace GFFClient
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(188, 6);
             // 
             // toolStripMenuItem46
             // 
             this.toolStripMenuItem46.Name = "toolStripMenuItem46";
-            this.toolStripMenuItem46.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem46.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem46.Text = "给他推荐好友";
             // 
             // toolStripMenuItem47
             // 
             this.toolStripMenuItem47.Name = "toolStripMenuItem47";
-            this.toolStripMenuItem47.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem47.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem47.Text = "删除好友";
             // 
             // toolStripMenuItem48
             // 
             this.toolStripMenuItem48.Name = "toolStripMenuItem48";
-            this.toolStripMenuItem48.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem48.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem48.Text = "移至黑名单";
             // 
             // toolStripMenuItem49
             // 
             this.toolStripMenuItem49.Name = "toolStripMenuItem49";
-            this.toolStripMenuItem49.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem49.Size = new System.Drawing.Size(191, 26);
             this.toolStripMenuItem49.Text = "举报";
             // 
             // btnSendMenu

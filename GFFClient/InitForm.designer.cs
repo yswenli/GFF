@@ -57,10 +57,10 @@ namespace GFFClient
             // 
             // skinWaterTextBox1
             // 
-            this.skinWaterTextBox1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.skinWaterTextBox1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.skinWaterTextBox1.Location = new System.Drawing.Point(47, 78);
             this.skinWaterTextBox1.Name = "skinWaterTextBox1";
-            this.skinWaterTextBox1.Size = new System.Drawing.Size(231, 21);
+            this.skinWaterTextBox1.Size = new System.Drawing.Size(231, 27);
             this.skinWaterTextBox1.TabIndex = 1;
             this.skinWaterTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.skinWaterTextBox1.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
@@ -84,7 +84,8 @@ namespace GFFClient
             // 
             // skinWaterTextBox2
             // 
-            this.skinWaterTextBox2.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.skinWaterTextBox2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.skinWaterTextBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.skinWaterTextBox2.Location = new System.Drawing.Point(47, 105);
             this.skinWaterTextBox2.Multiline = true;
             this.skinWaterTextBox2.Name = "skinWaterTextBox2";
@@ -101,7 +102,7 @@ namespace GFFClient
             this.skinWaterTextBox3.MaxLength = 15;
             this.skinWaterTextBox3.Name = "skinWaterTextBox3";
             this.skinWaterTextBox3.ReadOnly = true;
-            this.skinWaterTextBox3.Size = new System.Drawing.Size(231, 21);
+            this.skinWaterTextBox3.Size = new System.Drawing.Size(231, 25);
             this.skinWaterTextBox3.TabIndex = 3;
             this.skinWaterTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.skinWaterTextBox3.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
@@ -109,7 +110,7 @@ namespace GFFClient
             // 
             // InitForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(328, 229);
             this.Controls.Add(this.skinWaterTextBox3);
